@@ -9,6 +9,7 @@ BUCKET = [OPTIONAL] your-bucket-for-syncing-data (do not include 's3://')
 PROFILE = default
 PROJECT_NAME = Blank_Project
 PYTHON_INTERPRETER = python3
+#UCI_DATA_URL = https://archive.ics.uci.edu/ml/machine-learning-databases/00447/data.zip
 
 ifeq (,$(shell which conda))
 HAS_CONDA=False
@@ -27,7 +28,16 @@ requirements: test_environment
 
 ## Make Dataset
 data: requirements
+	
+# IF Data is local
 	$(PYTHON_INTERPRETER) src/data/make_dataset.py data/raw data/processed
+
+## IF Data is from a URL source - Don't forget to set up the variable path in global
+# @echo ">>> Downloading data from UCI."
+# curl -o data/raw/data.zip $(UCI_DATA_URL)
+# @echo ">>> Unzipping."
+# unzip data/raw/data.zip -d data/raw
+# $(PYTHON_INTERPRETER) src/data/make_dataset.py data/raw data/processed
 
 ## Delete all compiled Python files
 clean:
