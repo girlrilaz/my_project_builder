@@ -22,5 +22,4 @@ importlib-metadata
 flask
 cython
 coverage
-unittest
 

@@ -45,20 +45,20 @@ python -m run-model-train
 ### Testing locally
 
 The unit testing framework used for this project is [`unittest`](https://docs.python.org/3/library/unittest.html).
-Tests are stored in the `middleware/tests` directory.
+Tests are stored in the `blood-donation-prediction-3/unittests` directory.
 We are also using [`coverage.py`](https://coverage.readthedocs.io/) for measuring test coverage.
 
 To run the test suite locally, run the following command.
 You do not need to run the app first.
 
 ```
-coverage run -m local_test
+coverage run -m unittest discover
 ```
 
 You can then run the following command to generate a file-by-file coverage report:
 
 ```
-coverage report
+coverage report -m
 ```
 
 For a more detailed line-by-line coverage analysis, you can also generate a HTML coverage report:
