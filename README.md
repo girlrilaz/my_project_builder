@@ -1,9 +1,73 @@
-Blank Project
+Blood Donation Prediction Project
 ==============================
 
-blank data science project template
+Blood donation prediction project from Driven Data
 
-Project Organization
+## Getting Started
+
+To get started, first clone the this repository to your machine.
+
+### Set up a Python virtual environment
+
+Create a Python virtual environment for isolating this project on your machine using the following command:
+
+```
+python -m venv .venv
+```
+
+The current supported Python version is `3.7` so **please ensure that your virtual environment is created using this version of Python** to ensure compatability with the dev and prod environments.
+
+Next, activate your virtual environment (see [docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#activating-a-virtual-environment) for help on this).
+
+Windows:
+```
+.\.venv\Scripts\activate
+```
+Mac:
+```
+source .venv/bin/activate
+```
+
+Finally, install the project dependencies using pip:
+
+```
+pip install -r requirements.txt
+```
+
+### Run the application locally
+
+TODO:
+
+```
+python -m run-model-train
+```
+
+### Testing locally
+
+The unit testing framework used for this project is [`unittest`](https://docs.python.org/3/library/unittest.html).
+Tests are stored in the `middleware/tests` directory.
+We are also using [`coverage.py`](https://coverage.readthedocs.io/) for measuring test coverage.
+
+To run the test suite locally, run the following command.
+You do not need to run the app first.
+
+```
+coverage run -m local_test
+```
+
+You can then run the following command to generate a file-by-file coverage report:
+
+```
+coverage report
+```
+
+For a more detailed line-by-line coverage analysis, you can also generate a HTML coverage report:
+
+```
+coverage html
+```
+
+### Project Organization
 ------------
 
     ├── LICENSE

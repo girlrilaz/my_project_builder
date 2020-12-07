@@ -1,6 +1,8 @@
 ## data science libraries 
 pandas
+numpy
 sklearn
+scikit-learn
 numpy 
 keras
 
@@ -17,3 +19,8 @@ python-dotenv>=0.5.1
 attrs
 pyrsistent
 importlib-metadata
+flask
+cython
+coverage
+unittest
+
