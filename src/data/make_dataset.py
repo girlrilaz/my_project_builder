@@ -54,8 +54,4 @@ if __name__ == '__main__':
     # load up the .env entries as environment variables
     load_dotenv(find_dotenv())
 
-    input_folder = os.getenv("INPUT_FILEPATH")
-    if not os.listdir(input_folder):
-        print("Folder 'data/raw' is empty. Please include atleast 1 dataset in this folder")
-    else:
-        main()
+    main()
