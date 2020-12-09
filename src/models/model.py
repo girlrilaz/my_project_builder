@@ -22,7 +22,7 @@ MODEL_VERSION_NOTE = "RF on AAVAIL churn"
 SAVED_MODEL = os.path.join("models", "model-{}.joblib".format(re.sub("\.", "_", str(MODEL_VERSION))))
 
 
-def load_aavail_data():
+def load_data():
     data_dir = os.path.join(".", "data")
     df = pd.read_csv(os.path.join(data_dir, r"aavail-target.csv"))
        

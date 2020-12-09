@@ -1,8 +1,7 @@
 ## data science libraries 
 pandas
 numpy
-sklearn
-scikit-learn
+#scikit-learn
 numpy 
 keras
 

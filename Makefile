@@ -4,10 +4,13 @@
 # GLOBALS                                                                       #
 #################################################################################
 
+## WARNING: If this contains and sensitive information such as passwords or tokens
+## please create and add them to .env file  
+
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 BUCKET = [OPTIONAL] your-bucket-for-syncing-data (do not include 's3://')
 PROFILE = default
-PROJECT_NAME = Blank_Project
+ENV_NAME = iris_ccds
 PYTHON_INTERPRETER = python3
 #UCI_DATA_URL = https://archive.ics.uci.edu/ml/machine-learning-databases/00447/data.zip
 
@@ -22,12 +25,12 @@ endif
 #################################################################################
 
 ## Install Python Dependencies
-requirements: test_environment
+requirements:
 	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
 
 ## Make Dataset
-data: requirements
+data:
 	
 # IF Data is local
 	$(PYTHON_INTERPRETER) src/data/make_dataset.py data/raw data/processed
@@ -69,22 +72,38 @@ create_environment:
 ifeq (True,$(HAS_CONDA))
 		@echo ">>> Detected conda, creating conda environment."
 ifeq (3,$(findstring 3,$(PYTHON_INTERPRETER)))
-	conda create --name $(PROJECT_NAME) python=3
+	conda create --name $(ENV_NAME) python=3
 else
-	conda create --name $(PROJECT_NAME) python=2.7
+	conda create --name $(ENV_NAME) python=2.7
 endif
-		@echo ">>> New conda env created. Activate with:\nsource activate $(PROJECT_NAME)"
+		@echo ">>> New conda env created. Activate with:\nsource activate $(ENV_NAME)"
 else
 	$(PYTHON_INTERPRETER) -m pip install -q virtualenv virtualenvwrapper
 	@echo ">>> Installing virtualenvwrapper if not already installed.\nMake sure the following lines are in shell startup file\n\
 	export WORKON_HOME=$$HOME/.virtualenvs\nexport PROJECT_HOME=$$HOME/Devel\nsource /usr/local/bin/virtualenvwrapper.sh\n"
-	@bash -c "source `which virtualenvwrapper.sh`;mkvirtualenv $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER)"
-	@echo ">>> New virtualenv created. Activate with:\nworkon $(PROJECT_NAME)"
+	@bash -c "source `which virtualenvwrapper.sh`;mkvirtualenv $(ENV_NAME) --python=$(PYTHON_INTERPRETER)"
+	@echo ">>> New virtualenv created. Activate with:\nworkon $(ENV_NAME)"
 endif
 
 ## Test python environment is setup correctly
 test_environment:
-	$(PYTHON_INTERPRETER) test_environment.py
+	$(PYTHON_INTERPRETER) unittests/EnvironmentTests.py
+
+## Test logging is setup correctly
+test_logger:
+	$(PYTHON_INTERPRETER) unittests/LoggerTests.py
+
+## Test model is setup correctly
+test_model:
+	$(PYTHON_INTERPRETER) unittests/ModelTests.py
+
+## Test API is setup correctly
+test_API:
+	$(PYTHON_INTERPRETER) unittests/ApiTests.py
+
+## Test python environment is setup correctly
+test_all:
+	$(PYTHON_INTERPRETER) run-tests.py
 
 #################################################################################
 # PROJECT RULES                                                                 #
