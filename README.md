@@ -5,7 +5,11 @@ Blood donation prediction project from Driven Data
 
 ## Getting Started
 
-To get started, first clone the this repository to your machine.
+To get started, first clone the this repository to your machine. (see [docs] https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository for help on this)
+
+## Create and activate virtual environment
+
+Creating virtual environment to ensure reproducability of this project.
 
 ### OPTION 1: Set up a Python virtual environment with Makefile in your CLI
 
@@ -45,7 +49,7 @@ Windows or Mac with Conda:
 conda activate [replace_with_env_name]
 ```
 
-Finally, install the project dependencies using make:
+Finally, install the project dependencies using make command:
 
 ```
 make requirements
@@ -55,7 +59,7 @@ or pip:
 pip install -r requirements.txt
 ```
 
-### Run the application locally
+## Run the application locally
 
 TODO:
 
@@ -63,10 +67,25 @@ TODO:
 python -m run-model-train
 ```
 
-### Testing locally
+## Unit Testing
 
 The unit testing framework used for this project is [`unittest`](https://docs.python.org/3/library/unittest.html).
 Tests are stored in the `blood-donation-prediction-3/unittests` directory.
+An alternative unit testing framework that can be used - Pytest
+
+### Testing locally with make command
+
+To run individual unit testing, check the commands in Makefile. For example, to run the API test, enter the following in your command line
+```
+make test_API
+```
+
+To run all tests, 
+```
+make test_all
+```
+
+### Testing locally with Coverage
 We are also using [`coverage.py`](https://coverage.readthedocs.io/) for measuring test coverage.
 
 To run the test suite locally, run the following command.

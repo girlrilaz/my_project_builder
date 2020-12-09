@@ -101,9 +101,15 @@ test_model:
 test_API:
 	$(PYTHON_INTERPRETER) unittests/ApiTests.py
 
-## Test python environment is setup correctly
+## Run all unit tests with coverage
 test_all:
 	$(PYTHON_INTERPRETER) run-tests.py
+
+## TODO: (fix this) Run all unit tests with coverage
+test_coverage:
+	$(PYTHON_INTERPRETER) coverage run -m unittest discover
+	$(PYTHON_INTERPRETER) coverage report -m
+	$(PYTHON_INTERPRETER) coverage html
 
 #################################################################################
 # PROJECT RULES                                                                 #

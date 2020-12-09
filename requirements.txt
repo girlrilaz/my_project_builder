@@ -21,4 +21,5 @@ importlib-metadata
 flask
 cython
 coverage
+joblib
 
