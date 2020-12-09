@@ -21,9 +21,9 @@ make create_environment
 ```
 
 ### OPTION 2: Set up a Python virtual environment with 'conda'
-
+```
 conda create --name [replace_with_env_name] python=[replace_with_python_version]
-
+```
 ### OPTION 3: Set up a Python virtual environment with 'python-dotenv'
 
 Create a Python virtual environment for isolating this project on your machine using the following command:
