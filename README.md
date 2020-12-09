@@ -45,12 +45,12 @@ Windows or Mac with Conda:
 conda activate [replace_with_env_name]
 ```
 
-Finally, install the project dependencies using pip:
+Finally, install the project dependencies using make:
 
 ```
 make requirements
 ```
-or
+or pip:
 ```
 pip install -r requirements.txt
 ```
