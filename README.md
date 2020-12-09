@@ -58,6 +58,11 @@ or pip:
 ```
 pip install -r requirements.txt
 ```
+If you need to extract the list of packages from this environment, 
+
+```
+pip freeze > requirements.txt
+```
 
 ## Run the application locally
 
@@ -77,16 +82,21 @@ An alternative unit testing framework that can be used - Pytest
 
 To run individual unit testing, check the commands in Makefile. For example, to run the API test, enter the following in your command line
 ```
-make test_API
+python -m unittests.ApiTests
 ```
 
 To run all tests, 
+
+```
+python -m run-tests
+```
+or 
 ```
 make test_all
 ```
 
 ### Testing locally with Coverage
-We are also using [`coverage.py`](https://coverage.readthedocs.io/) for measuring test coverage.
+This project template also uses [`coverage.py`](https://coverage.readthedocs.io/) for measuring test coverage.
 
 To run the test suite locally, run the following command.
 You do not need to run the app first.
@@ -159,3 +169,4 @@ coverage html
 --------
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
+<p><small>Modified by Nor Raymond</small></p>

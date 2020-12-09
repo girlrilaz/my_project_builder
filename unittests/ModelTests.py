@@ -10,9 +10,6 @@ sys.path.insert(1, os.path.join('..', os.getcwd()))
 ## import model specific functions and variables
 from src.models import *
 
-
-
-
 class ModelTest(unittest.TestCase):
     """
     test the essential functionality
