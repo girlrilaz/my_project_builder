@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 import os
 import glob
+import yaml
 import click
 import logging
 import pandas as pd
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.impute import SimpleImputer
 
 class bcolors:
     HEADER = '\033[95m'
@@ -30,17 +34,32 @@ def main(input_filepath, output_filepath):
     """
         
     logger = logging.getLogger(__name__)
+    
+     ## load config data
+    # folder to load config file
+    CONFIG_PATH = "conf/base"
 
-    filename = os.getenv("FILENAME")
-    logger.info(f"{bcolors.WARNING}Data Processing{bcolors.ENDC} : filename - '{filename}' from folder data/raw")
+    # Function to load yaml configuration file
+    def load_config(config_name):
+        with open(os.path.join(CONFIG_PATH, config_name), 'r') as file:
+            config = yaml.safe_load(file)
+
+        return config
+
+    config = load_config("catalog.yml")
+
+    filename = os.path.join(config["base"]["data_path"]["input"], config["base"]["data"]["filename"])
+    logger.info(f"{bcolors.WARNING}Data Processing{bcolors.ENDC} : filename - '{filename}' from folder data/raw to data/processed")
 
     # Read data from input path
-    df = pd.read_csv(os.path.join(os.getenv("INPUT_FILEPATH"),os.getenv("FILENAME")))
+    input_path = os.path.join(config["base"]["data_path"]["input"], config["base"]["data"]["filename"])
+    df = pd.read_csv(input_path)
 
     # TODO: process data here
 
     # Save data to output path
-    df.to_csv(os.path.join(os.getenv("OUTPUT_FILEPATH"),os.getenv("FILENAME")), index=False)
+    output_path = os.path.join(config["base"]["data_path"]["output"], config["base"]["data"]["filename"])
+    df.to_csv(output_path, index=False)
 
 
 if __name__ == '__main__':

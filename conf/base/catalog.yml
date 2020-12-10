@@ -1,0 +1,55 @@
+# Here you can define all your data sets by using simple YAML syntax.
+
+# ---------------------------------------------------------
+# Local dataset
+# ---------------------------------------------------------
+
+base:
+  dir_path: ".."
+  data_path:
+    input: "data/raw"
+    output: "data/processed"
+    logs: "logs"
+  data:
+    filename: "iris.csv"
+
+# ---------------------------------------------------------
+# External dataset examples
+# ---------------------------------------------------------
+
+# dev:
+#   path_db: "sqlite:////some_dir/dev.db"
+  
+# prod:
+#   path_db: "sqlite:////some_other_dir/prod.db"
+
+#bikes:
+#  type: csv
+#  filepath: "data/01_raw/bikes.csv"
+#
+#weather:
+#  type: spark_dataset
+#  filepath: s3a://your_bucket/data/01_raw/weather*
+#  file_format: csv
+#  credentials: dev_s3
+#  load_args:
+#    header: True
+#    inferSchema: True
+#  save_args:
+#    sep: '|'
+#    header: True
+#
+#scooters:
+#  type: sql_table
+#  credentials: scooters_credentials
+#  table_name: scooters
+#  load_args:
+#    index_col: ['name']
+#    columns: ['name', 'gear']
+#  save_args:
+#    if_exists: 'replace'
+#    # if_exists: 'fail'
+#    # if_exists: 'append'
+#
+
+

@@ -22,4 +22,5 @@ flask
 cython
 coverage
 joblib
+pyyaml
 

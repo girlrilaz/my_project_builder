@@ -5,7 +5,7 @@ Blood donation prediction project from Driven Data
 
 ## Getting Started
 
-To get started, first clone the this repository to your machine. (see [docs] https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository for help on this)
+To get started, first clone this repository to your machine. (see [docs] https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository for help on this)
 
 ## Create and activate virtual environment
 
@@ -169,4 +169,4 @@ coverage html
 --------
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
-<p><small>Modified by Nor Raymond</small></p>
+<p><small>Modified by Nor Raymond with references to Quantum Black's open source Kedro framework - https://kedro.readthedocs.io/en/stable/ , https://github.com/quantumblacklabs/kedro</small></p>
