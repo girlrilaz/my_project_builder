@@ -11,9 +11,7 @@ import pandas as pd
 sys.path.insert(1, os.path.join('..', os.getcwd()))
 
 ## import model specific functions and variables
-from logger import update_train_log, update_predict_log
-
-
+from src.logger import update_train_log, update_predict_log, update_processing_log
 
 class LoggerTest(unittest.TestCase):
     """
@@ -25,7 +23,7 @@ class LoggerTest(unittest.TestCase):
         ensure log file is created
         """
 
-        log_file = os.path.join("logs", "train-test.log")
+        log_file = os.path.join("logs", "model_train", "train-test.log")
         if os.path.exists(log_file):
             os.remove(log_file)
         
@@ -46,7 +44,7 @@ class LoggerTest(unittest.TestCase):
         ensure that content can be retrieved from log file
         """
 
-        log_file = os.path.join("logs", "train-test.log")
+        log_file = os.path.join("logs", "model_train", "train-test.log")
         
         ## update the log
         data_shape = (100,10)
@@ -68,7 +66,7 @@ class LoggerTest(unittest.TestCase):
         ensure log file is created
         """
 
-        log_file = os.path.join("logs","predict-test.log")
+        log_file = os.path.join("logs" ,"model_predict" ,"predict-test.log")
         if os.path.exists(log_file):
             os.remove(log_file)
         
@@ -90,7 +88,7 @@ class LoggerTest(unittest.TestCase):
         ensure that content can be retrieved from log file
         """
 
-        log_file = os.path.join("logs","predict-test.log")
+        log_file = os.path.join("logs" , "model_predict" ,"predict-test.log")
 
         ## update the log
         y_pred = [0]
@@ -105,6 +103,39 @@ class LoggerTest(unittest.TestCase):
         df = pd.read_csv(log_file)
         logged_y_pred = [literal_eval(i) for i in df['y_pred'].copy()][-1]
         self.assertEqual(y_pred,logged_y_pred)
+
+    def test_05_process(self):
+        """
+        ensure log file is created
+        """
+
+        log_file = os.path.join("logs" ,"data_processing" , "process-test.log")
+        if os.path.exists(log_file):
+            os.remove(log_file)
+        
+        ## update the log
+        filename = "iris.csv"
+        
+        update_processing_log(filename, test=True)
+
+        self.assertTrue(os.path.exists(log_file))
+
+    def test_06_process(self):
+        """
+        ensure that content can be retrieved from log file
+        """
+
+        log_file = os.path.join("logs", "data_processing", "process-test.log")
+        
+        ## update the log
+        filename = "iris.csv"
+        
+        update_processing_log(filename, test=True)
+
+        df = pd.read_csv(log_file)
+        filename_test = [i for i in df['filename'].copy()][-1]
+
+        self.assertEqual(filename, filename_test)
 
 
 ### Run the tests

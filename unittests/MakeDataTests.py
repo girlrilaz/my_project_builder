@@ -15,7 +15,7 @@ class MakeDataTest(unittest.TestCase):
         if [f for f in os.listdir(input_folder) if not f.startswith('.')] == []:
             raise ValueError("Folder 'data/raw' is empty. Please ensure there is atleast one data file in this folder.")
         else: 
-            print("Raw folder test passed")
+            print("Raw folder 'not-empty' test passed")
 
 ### Run the tests
 if __name__ == '__main__':

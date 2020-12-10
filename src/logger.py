@@ -89,7 +89,7 @@ def update_processing_log(FILENAME, test=False):
     ## name the logfile using something that cycles with date (day, month, year)    
     today = date.today()
     if test:
-        logfile = os.path.join("logs", "data_processing", "data_processing.log")
+        logfile = os.path.join("logs", "data_processing", "process-test.log")
     else:
         logfile = os.path.join("logs", "data_processing", "processing-{}-{}.log".format(today.year, today.month))
         
