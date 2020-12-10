@@ -1,4 +1,4 @@
-from model import model_train, model_load
+from src.models.train_model import model_train, model_load
 
 def main():
     

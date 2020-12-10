@@ -94,7 +94,7 @@ def update_processing_log(FILENAME, test=False):
         logfile = os.path.join("logs", "data_processing", "processing-{}-{}.log".format(today.year, today.month))
         
     ## write the data to a csv file    
-    header = ['unique_id','timestamp','filename']
+    header = ['unique_id','timestamp','filepath']
     write_header = False
     if not os.path.exists(logfile):
         write_header = True
@@ -126,7 +126,7 @@ if __name__ == "__main__":
     config1 = load_config("catalog.yml")
     config2 = load_config("parameters.yml")
 
-    FILENAME = os.path.join(config1["base"]["data_path"]["input"], config1["base"]["data"]["filename"])
+    FILEPATH = os.path.join(config1["base"]["data_path"]["input"], config1["base"]["data"]["filename"])
     MODEL_VERSION = config2["model"]["version"]
     MODEL_VERSION_NOTE = config2["model"]["note"]
 
@@ -139,7 +139,7 @@ if __name__ == "__main__":
                        "00:00:01", MODEL_VERSION, test=True)
 
     ## processing logger
-    update_processing_log(FILENAME, test=True)
+    update_processing_log(FILEPATH, test=True)
 
     
     

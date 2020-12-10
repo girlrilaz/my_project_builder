@@ -1,4 +1,4 @@
-import time,os,re,csv,sys,uuid,joblib
+import time,os,re,csv,sys,uuid,joblib, yaml
 import pickle
 from datetime import date
 import numpy as np
@@ -18,35 +18,105 @@ from src.features.build_features import load_data
 ## load environment variables
 load_dotenv(find_dotenv())
 
-## load data from build_features
-data = load_data()
+## load config data
+# folder to load config file
+CONFIG_PATH = "conf/base"
+
+# Function to load yaml configuration file
+def load_config(config_name):
+    with open(os.path.join(CONFIG_PATH, config_name), 'r') as file:
+        config = yaml.safe_load(file)
+
+    return config
+
+model_config = load_config("parameters.yml")
+
+## load model parameters from conf/base/parameters.yml
+MODEL_VERSION = model_config["model"]["version"]
+MODEL_VERSION_NOTE = model_config["model"]["note"]
+SAVED_MODEL = os.path.join("models", "model-{}.joblib".format(re.sub("\.", "_", str(MODEL_VERSION))))
 
 ## model specific variables (iterate the version and note with each change)
 if not os.path.exists(os.path.join(".", "models")):
     os.mkdir("models") 
 
-model_version = os.getenv("MODEL_VERSION")
-model_version_note = os.getenv("MODEL_VERSION_NOTE")
-SAVED_MODEL = os.path.join("models", "model-{}.joblib".format(re.sub("\.", "_", str(model_version))))
-
-def get_preprocessor():
+def model_predict(query, model=None, test=False):
     """
-    return the preprocessing pipeline
+    example funtion to predict from model
     """
 
-    ## preprocessing pipeline
-    numeric_features = ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']
-    numeric_transformer = Pipeline(steps=[('imputer', SimpleImputer(strategy='mean')),
-                                          ('scaler', StandardScaler())])
+    ## start timer for runtime
+    time_start = time.time()
+    
+    ## input checks
+    if isinstance(query, dict):
+        query = pd.DataFrame(query)
+    elif isinstance(query, pd.DataFrame):
+        pass
+    else:
+        raise Exception("ERROR (model_predict) - invalid input. {} was given".format(type(query)))
 
-    categorical_features = []
-    categorical_transformer = Pipeline(steps=[('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
-                                              ('onehot', OneHotEncoder(handle_unknown='ignore'))])
+    ## features check
+    features = sorted(query.columns.tolist())
+    if features != ['petal_length', 'petal_width', 'sepal_length', 'sepal_width', ]:
+        print("query features: {}".format(",".join(features)))
+        raise Exception("ERROR (model_predict) - invalid features present") 
+    
+    ## load model if needed
+    if not model:
+        model = model_load()
+    
+    ## output checking
+    if len(query.shape) == 1:
+        query = query.reshape(1, -1)
+    
+    ## make prediction and gather data for log entry
+    y_pred = model.predict(query)
+    y_proba = 'None'
+    
+    m, s = divmod(time.time()-time_start, 60)
+    h, m = divmod(m, 60)
+    runtime = "%03d:%02d:%02d"%(h, m, s)
 
-    preprocessor = ColumnTransformer(transformers=[('num', numeric_transformer, numeric_features),
-                                                   ('cat', categorical_transformer, categorical_features)])
+    ## update the log file
+    for i in range(query.shape[0]):
+        update_predict_log(y_pred[i], y_proba, query.iloc[i].values.tolist(), 
+                           runtime, MODEL_VERSION, test=test)
+        
+    return({'y_pred':y_pred, 'y_proba':y_proba})
 
-    return(preprocessor)
+def model_load(test=False):
+    """
+    example funtion to load model
+    """
+    if test : 
+        print( "... loading test version of model" )
+        model = joblib.load(os.path.join("models","test.joblib"))
+        return(model)
 
-print(data)
-print(type(data))
+    if not os.path.exists(SAVED_MODEL):
+        exc = "Model '{}' cannot be found did you train the full model?".format(SAVED_MODEL)
+        raise Exception(exc)
+    
+    model = joblib.load(SAVED_MODEL)
+    return(model)
+
+if __name__ == '__main__':
+
+    """
+    basic test procedure for predict_model.py
+    """
+
+    ## load the model
+    model = model_load(test=True)
+    
+    ## example predict
+    query = pd.DataFrame({'sepal_length': [5.1, 6.4, 6.9],
+                          'sepal_width': [3.5, 3.2, 3.2],
+                          'petal_length': [1.4, 4.5, 5.7],
+                          'petal_width': [0.2, 1.5, 2.3]
+    })
+
+    result = model_predict(query, model, test=True)
+    y_pred = result['y_pred']
+    print("predicted: {}".format(y_pred))

@@ -133,7 +133,7 @@ class LoggerTest(unittest.TestCase):
         update_processing_log(filename, test=True)
 
         df = pd.read_csv(log_file)
-        filename_test = [i for i in df['filename'].copy()][-1]
+        filename_test = [i for i in df['filepath'].copy()][-1]
 
         self.assertEqual(filename, filename_test)
 

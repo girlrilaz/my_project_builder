@@ -35,6 +35,12 @@ data:
 # IF Data is local
 	$(PYTHON_INTERPRETER) src/data/make_dataset.py data/raw data/processed
 
+## Make Dataset
+features:
+	
+# IF Data is local
+	$(PYTHON_INTERPRETER) src/features/build_features.py
+
 ## IF Data is from a URL source - Don't forget to set up the variable path in global
 # @echo ">>> Downloading data from UCI."
 # curl -o data/raw/data.zip $(UCI_DATA_URL)

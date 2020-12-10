@@ -8,7 +8,8 @@ import unittest
 sys.path.insert(1, os.path.join('..', os.getcwd()))
 
 ## import model specific functions and variables
-from src.models import *
+from src.models.train_model import *
+from src.models.predict_model import *
 
 class ModelTest(unittest.TestCase):
     """
@@ -45,15 +46,15 @@ class ModelTest(unittest.TestCase):
         model = model_load(test=True)
     
         ## ensure that a list can be passed
-        query = {'country': ['united_states','singapore','united_states'],
-                 'age': [24,42,20],
-                 'subscriber_type': ['aavail_basic','aavail_premium','aavail_basic'],
-                 'num_streams': [8,17,14]
-        }
+        query = pd.DataFrame({'sepal_length': [5.1, 6.4],
+                            'sepal_width': [3.5, 3.2],
+                            'petal_length': [1.4, 4.5],
+                            'petal_width': [0.2, 1.5]
+        })
 
         result = model_predict(query, model, test=True)
         y_pred = result['y_pred']
-        self.assertTrue(y_pred[0] in [0,1])
+        self.assertTrue(y_pred[0] in ['setosa','versicolor', 'virginica'])
 
           
 ### Run the tests

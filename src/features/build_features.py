@@ -1,22 +1,41 @@
-import os
+import os, yaml
 import logging
 import pandas as pd
 import numpy as np
 from dotenv import find_dotenv, load_dotenv
 
+class bcolors:
+    WARNING = '\033[93m'
+    ENDC = '\033[0m'
+
 def load_data():
 
-    data_dir = os.path.join(os.getenv("OUTPUT_FILEPATH"),os.getenv("FILENAME"))
+    ## load config data
+    # folder to load config file
+    CONFIG_PATH = "conf/base"
+
+    # Function to load yaml configuration file
+    def load_config(config_name):
+        with open(os.path.join(CONFIG_PATH, config_name), 'r') as file:
+            config = yaml.safe_load(file)
+
+        return config
+
+    config = load_config("catalog.yml")
+
+    filename = config["base"]["data"]["filename"]
+    logger = logging.getLogger(__name__)
+    logger.info(f"{bcolors.WARNING}Data Processing{bcolors.ENDC} : building data features for '{filename}' completed")
+
+    data_dir = os.path.join(config["base"]["data_path"]["output"], config["base"]["data"]["filename"])
     df = pd.read_csv(data_dir)
        
     ## pull out the target and remove uneeded columns
     _y = df.pop('species')
-    y = np.zeros(_y.size)
-    y[_y==0] = 1 
     df.head()
     X = df
 
-    return(X, y)
+    return(X, _y)
 
 if __name__ == "__main__":
     

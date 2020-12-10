@@ -34,8 +34,7 @@ def main(filename, input_filepath, output_filepath):
     """
         
     logger = logging.getLogger(__name__)
-    
-    logger.info(f"{bcolors.WARNING}Data Processing{bcolors.ENDC} : filename - '{filename}' from folder data/raw to data/processed")
+    logger.info(f"{bcolors.WARNING}Data Processing{bcolors.ENDC} : data cleaning and transformation for '{filename}' from folder data/raw to data/processed completed")
 
     # Read data from input path
     input_path = input_filepath
@@ -59,7 +58,7 @@ if __name__ == '__main__':
     # load up the .env entries as environment variables
     load_dotenv(find_dotenv())
 
-         ## load config data
+    ## load config data
     # folder to load config file
     CONFIG_PATH = "conf/base"
 
@@ -71,8 +70,9 @@ if __name__ == '__main__':
         return config
 
     config = load_config("catalog.yml")
-
-    filename = os.path.join(config["base"]["data_path"]["input"], config["base"]["data"]["filename"])
+    
+    filename = config["base"]["data"]["filename"]
+    filepath = os.path.join(config["base"]["data_path"]["input"], config["base"]["data"]["filename"])
     input_path = os.path.join(config["base"]["data_path"]["input"], config["base"]["data"]["filename"])
     output_path = os.path.join(config["base"]["data_path"]["output"], config["base"]["data"]["filename"])
 
