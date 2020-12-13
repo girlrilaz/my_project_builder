@@ -3,6 +3,7 @@ from flask import Flask, jsonify, request
 from flask import render_template, send_from_directory
 import os
 import re
+import yaml
 import joblib
 import socket
 import json
@@ -11,8 +12,26 @@ import pandas as pd
 
 
 ## import model specific functions and variables
-from model import model_train, model_load, model_predict
-from model import MODEL_VERSION, MODEL_VERSION_NOTE
+from src.models.train_model import model_train
+from src.models.predict_model import model_predict, model_load
+#from model import MODEL_VERSION, MODEL_VERSION_NOTE
+
+## load config data
+# folder to load config file
+CONFIG_PATH = "conf/base"
+
+# Function to load yaml configuration file
+def load_config(config_name):
+    with open(os.path.join(CONFIG_PATH, config_name), 'r') as file:
+        config = yaml.safe_load(file)
+
+    return config
+
+model_config = load_config("parameters.yml")
+
+## load model parameters from conf/base/parameters.yml
+MODEL_VERSION = model_config["model"]["version"]
+MODEL_VERSION_NOTE = model_config["model"]["note"]
 
 app = Flask(__name__)
 
