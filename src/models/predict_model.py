@@ -108,7 +108,7 @@ if __name__ == '__main__':
     """
 
     ## load the model
-    model = model_load(test=True)
+    model = model_load(test=False)
     
     ## example predict
     query = pd.DataFrame({'sepal_length': [5.1, 6.4, 6.9],
@@ -117,6 +117,6 @@ if __name__ == '__main__':
                           'petal_width': [0.2, 1.5, 2.3]
     })
 
-    result = model_predict(query, model, test=True)
+    result = model_predict(query, model, test=False)
     y_pred = result['y_pred']
     print("predicted: {}".format(y_pred))

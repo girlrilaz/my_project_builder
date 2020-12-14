@@ -170,4 +170,4 @@ if __name__ == '__main__':
     """
     
     ## train the model
-    model_train(test=True)
+    model_train(test=False)

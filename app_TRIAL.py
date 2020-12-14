@@ -14,25 +14,24 @@ import pandas as pd
 ## import model specific functions and variables
 from src.models.train_model import model_train, model_load
 from src.models.predict_model import model_predict, model_load
-from src.models.train_model import MODEL_VERSION, MODEL_VERSION_NOTE
+#from model import MODEL_VERSION, MODEL_VERSION_NOTE
 
-# ## load config data
-# # folder to load config file
-# CONFIG_PATH = "conf/base"
+## load config data
+# folder to load config file
+CONFIG_PATH = "conf/base"
 
-# # Function to load yaml configuration file
-# def load_config(config_name):
-#     with open(os.path.join(CONFIG_PATH, config_name), 'r') as file:
-#         config = yaml.safe_load(file)
+# Function to load yaml configuration file
+def load_config(config_name):
+    with open(os.path.join(CONFIG_PATH, config_name), 'r') as file:
+        config = yaml.safe_load(file)
 
-#     return config
+    return config
 
-# model_config = load_config("parameters.yml")
+model_config = load_config("parameters.yml")
 
-# ## load model parameters from conf/base/parameters.yml
-# MODEL_VERSION = model_config["model"]["version"]
-# MODEL_VERSION_NOTE = model_config["model"]["note"]
-# SAVED_MODEL = os.path.join("models", "model-{}.joblib".format(re.sub("\.", "_", str(MODEL_VERSION))))
+## load model parameters from conf/base/parameters.yml
+MODEL_VERSION = model_config["model"]["version"]
+MODEL_VERSION_NOTE = model_config["model"]["note"]
 
 app = Flask(__name__)
 
@@ -87,13 +86,24 @@ def predict():
 
         
     ## load model
-    model = model_load(test=test)
+    #model = model_load(test=test)
+    model = joblib.load(open('models/model-0-1.pkl', 'rb'))
     
     if not model:
         print("ERROR: model is not available")
         return jsonify([])
 
-    _result = model_predict(query, model, test=test)
+    int_features = [int(x) for x in request.form.values()]
+    final_features = [np.array(int_features)]
+    prediction = model.predict(final_features, model, test=test)
+
+    _result = round(prediction[0], 2)
+
+    print(output)
+
+    #return render_template('index.html', prediction_text='Sales should be $ {}'.format(output))
+
+    # _result = model_predict(query, model, test=test)
     result = {}
     
     ## convert numpy objects to ensure they are serializable
@@ -104,6 +114,7 @@ def predict():
             result[key] = item
     
     return(jsonify(result))
+
 
 @app.route('/train', methods=['GET','POST'])
 def train():
