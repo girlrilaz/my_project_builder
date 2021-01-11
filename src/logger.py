@@ -27,7 +27,7 @@ def update_train_log(data_shape, eval_test, runtime, MODEL_VERSION, MODEL_VERSIO
     """
 
     if not os.path.exists(os.path.join(".","logs", "model_train")):
-        os.mkdir("model_train")
+        os.mkdir(os.path.join(".","logs", "model_train"))
 
     ## name the logfile using something that cycles with date (day, month, year)    
     today = date.today()
@@ -56,7 +56,7 @@ def update_predict_log(y_pred, y_proba, query, runtime, MODEL_VERSION, test=Fals
     update predict log file
     """
     if not os.path.exists(os.path.join(".","logs", "model_predict")):
-        os.mkdir("model_predict")
+        os.mkdir(os.path.join(".","logs", "model_predict"))
 
     ## name the logfile using something that cycles with date (day, month, year)    
     today = date.today()
@@ -84,7 +84,7 @@ def update_processing_log(FILENAME, test=False):
     update predict log file
     """
     if not os.path.exists(os.path.join(".","logs", "data_processing")):
-        os.mkdir("data_processing")
+        os.mkdir(os.path.join(".","logs", "data_processing"))
 
     ## name the logfile using something that cycles with date (day, month, year)    
     today = date.today()

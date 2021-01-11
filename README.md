@@ -64,6 +64,18 @@ If you need to extract the list of packages from this environment,
 pip freeze > requirements.txt
 ```
 
+## Prepare the dataset
+
+```
+make data
+```
+
+then prepare the training set features,
+
+```
+make features
+```
+
 ## Run the application locally
 
 TODO:

@@ -10,7 +10,7 @@
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 BUCKET = [OPTIONAL] your-bucket-for-syncing-data (do not include 's3://')
 PROFILE = default
-ENV_NAME = iris_ccds
+ENV_NAME = iris
 PYTHON_INTERPRETER = python3
 #UCI_DATA_URL = https://archive.ics.uci.edu/ml/machine-learning-databases/00447/data.zip
 
@@ -78,7 +78,7 @@ create_environment:
 ifeq (True,$(HAS_CONDA))
 		@echo ">>> Detected conda, creating conda environment."
 ifeq (3,$(findstring 3,$(PYTHON_INTERPRETER)))
-	conda create --name $(ENV_NAME) python=3
+	conda create --name $(ENV_NAME) python=3.8
 else
 	conda create --name $(ENV_NAME) python=2.7
 endif
