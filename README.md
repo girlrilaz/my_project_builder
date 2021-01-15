@@ -64,9 +64,10 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-If you need to extract the list of packages from this environment or another environment:
+If you need to extract a list of the depencies from this environment or another environment:
 
 ```
+conda activate [env name]
 pip freeze > requirements.txt
 ```
 
