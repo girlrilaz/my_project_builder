@@ -64,7 +64,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-If you need to extract the list of packages from this environment, 
+If you need to extract the list of packages from this environment or another environment:
 
 ```
 pip freeze > requirements.txt
