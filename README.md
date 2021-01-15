@@ -39,9 +39,7 @@ python -m venv .venv
 
 ##### OPTION 1: Conda virtual environment
 
-Windows or Mac with Conda:
-
-In the terminal or command line :
+Windows or Mac - in the terminal or command line :
 
 <i>conda activate [replace_with_env_name]</i>
 
