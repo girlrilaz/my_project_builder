@@ -1,7 +1,7 @@
-Blood Donation Prediction Project
+ALA automation
 ==============================
 
-Blood donation prediction project from Driven Data
+Language assessment report generation automation.
 
 ## Getting Started
 
@@ -11,20 +11,17 @@ To get started, first clone this repository to your machine. (see [docs] https:/
 
 Creating virtual environment to ensure reproducability of this project.
 
-### OPTION 1: Set up a Python virtual environment with Makefile in your CLI
+### OPTION 1: If you have Anaconda distribution installed in your machine, set up a virtual environment with 'conda'
 
-1. open Makefile in the project root directory then under "GLOBAL", you will see ENV_NAME. Change the value to your desired environment name
-2. In your command line, type 
+In your terminal or command line, the function to create virtual environment with conda 
 
-```
-make create_environment
-```
-
-### OPTION 2: Set up a Python virtual environment with 'conda'
-```
 conda create --name [replace_with_env_name] python=[replace_with_python_version]
+
+for this project, copy and paste the command below
 ```
-### OPTION 3: Set up a Python virtual environment with 'python-dotenv'
+conda create --name ALA python=3.8
+```
+### OPTION 2: Set up a Python virtual environment with 'python-dotenv'
 
 Create a Python virtual environment for isolating this project on your machine using the following command:
 

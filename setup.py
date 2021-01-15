@@ -4,7 +4,7 @@ setup(
     name='src',
     packages=find_packages(),
     version='0.1.0',
-    description='Blood donation prediction from Driven Data',
+    description='ALA automation',
     author='Nor Raymond',
     license='MIT',
 )
