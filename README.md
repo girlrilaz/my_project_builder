@@ -86,14 +86,14 @@ python -m [something]
 ## Unit Testing
 
 The unit testing framework used for this project is [`unittest`](https://docs.python.org/3/library/unittest.html).
-Tests are stored in the `blood-donation-prediction-3/unittests` directory.
+Tests are stored in the `ALA_automation/unittests` directory.
 An alternative unit testing framework that can be used - Pytest
 
 ### Testing locally with make command
 
 To run individual unit testing, check the commands in Makefile. For example, to run the API test, enter the following in your command line
 ```
-python -m unittests.ApiTests
+python -m unittests.MakeDataTests
 ```
 
 To run all tests, 
@@ -137,6 +137,17 @@ python -m run-tests
     │   │
     │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
     │       └── visualize.py
+    │
+    ├── unittests          <- where each individual unit test scripts are stored
+    │   ├── __init__.py    <- Makes src a Python module
+    │   ├── [something]Tests.py    <- The list of tests depends on how many are created
+    │   ....
+    ├── .gitignore         <- .gitignore contains a list of files/folders/subfolders that will be
+    │                          ignored when syncing to the github repository. Very important if you want to
+    │                          keep the confidential items such as data that are not supposed to be
+    │                          published or credentials and secret keys/tokens
+    │
+    ├──.env    <- typically where the confidential keys and credentials are kept i.e. username, password etc.
 
 
 --------
