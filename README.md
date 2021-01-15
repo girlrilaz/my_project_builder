@@ -13,9 +13,9 @@ Creating virtual environment to ensure reproducability of this project.
 
 ### OPTION 1: If you have Anaconda distribution installed in your machine, set up a virtual environment with 'conda'
 
-In your terminal or command line, the function to create virtual environment with conda 
+In your terminal or command line, the command to create virtual environment with conda :
 
-conda create --name [replace_with_env_name] python=[replace_with_python_version]
+<i> conda create --name [replace_with_env_name] python=[replace_with_python_version] </i>
 
 for this project, copy and paste the command below
 ```
