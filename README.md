@@ -3,11 +3,11 @@ ALA automation
 
 Language assessment report generation automation.
 
-## Getting Started
+## 1. Getting Started
 
 To get started, first clone this repository to your machine. (see [docs] https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository for help on this)
 
-## Create and activate virtual environment
+## 2. Create virtual environment
 
 Creating virtual environment to ensure reproducability of this project.
 
@@ -23,15 +23,33 @@ conda create --name ALA python=3.8
 ```
 ##### OPTION 2: Set up a Python virtual environment with 'python-dotenv'
 
-Create a Python virtual environment for isolating this project on your machine using the following command:
+Make sure you have python-dotenv installed
+
+```
+pip install python-dotenv
+```
+
+Then create a the virtual environment for isolating this project on your machine using the following command:
 
 ```
 python -m venv .venv
 ```
 
-The current supported Python version is `3.7` so **please ensure that your virtual environment is created using this version of Python** to ensure compatability with the dev and prod environments.
+## 3. Activate the virtual environment
 
-Next, activate your virtual environment (see [docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/#activating-a-virtual-environment) for help on this).
+##### OPTION 1: Conda virtual environment
+
+Windows or Mac with Conda:
+
+In the terminal or command line :
+
+<i>conda activate [replace_with_env_name]</i>
+
+```
+conda activate ALA
+```
+
+##### OPTION 2: dotenv virtual environment
 
 Windows:
 ```
@@ -41,44 +59,30 @@ Mac:
 ```
 source .venv/bin/activate
 ```
-Windows or Mac with Conda:
-```
-conda activate [replace_with_env_name]
-```
 
-Finally, install the project dependencies using make command:
+## 3. Install Python dependencies
 
-```
-make requirements
-```
 or pip:
 ```
 pip install -r requirements.txt
 ```
+
 If you need to extract the list of packages from this environment, 
 
 ```
 pip freeze > requirements.txt
 ```
 
-## Prepare the dataset
+## Prepare the dataset and check the data processing report
 
 ```
-make data
+python -m [something]
 ```
 
-then prepare the training set features,
+## Run the entire report generation
 
 ```
-make features
-```
-
-## Run the application locally
-
-TODO:
-
-```
-python -m run-model-train
+python -m [something]
 ```
 
 ## Unit Testing
@@ -99,38 +103,11 @@ To run all tests,
 ```
 python -m run-tests
 ```
-or 
-```
-make test_all
-```
-
-### Testing locally with Coverage
-This project template also uses [`coverage.py`](https://coverage.readthedocs.io/) for measuring test coverage.
-
-To run the test suite locally, run the following command.
-You do not need to run the app first.
-
-```
-coverage run -m unittest discover
-```
-
-You can then run the following command to generate a file-by-file coverage report:
-
-```
-coverage report -m
-```
-
-For a more detailed line-by-line coverage analysis, you can also generate a HTML coverage report:
-
-```
-coverage html
-```
 
 ### Project Organization
 ------------
 
     ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
     ├── README.md          <- The top-level README for developers using this project.
     ├── data
     │   ├── external       <- Data from third party sources.
@@ -138,15 +115,9 @@ coverage html
     │   ├── processed      <- The final, canonical data sets for modeling.
     │   └── raw            <- The original, immutable data dump.
     │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
-    │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
     ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
     │                         the creator's initials, and a short `-` delimited description, e.g.
     │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
     │
     ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
     │   └── figures        <- Generated graphics and figures to be used in reporting
@@ -159,20 +130,15 @@ coverage html
     │   ├── __init__.py    <- Makes src a Python module
     │   │
     │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
+    │   │   └── make_dataset.py  ## Change this
     │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
-    │   │   └── build_features.py
-    │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
+    │   ├── reports         <- Scripts to run different report generation scripts
+    │   │   │                 
+    │   │   ├── predict_model.py ## Change this
+    │   │   └── train_model.py ## Change this
     │   │
     │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
     │       └── visualize.py
-    │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
 
 
 --------
