@@ -60,7 +60,6 @@ source .venv/bin/activate
 
 ## 3. Install Python dependencies
 
-or pip:
 ```
 pip install -r requirements.txt
 ```
