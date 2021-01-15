@@ -11,7 +11,7 @@ To get started, first clone this repository to your machine. (see [docs] https:/
 
 Creating virtual environment to ensure reproducability of this project.
 
-### OPTION 1: If you have Anaconda distribution installed in your machine, set up a virtual environment with 'conda'
+##### OPTION 1: If you have Anaconda distribution installed in your machine, set up a virtual environment with 'conda'
 
 In your terminal or command line, the command to create virtual environment with conda :
 
@@ -21,7 +21,7 @@ for this project, copy and paste the command below
 ```
 conda create --name ALA python=3.8
 ```
-### OPTION 2: Set up a Python virtual environment with 'python-dotenv'
+##### OPTION 2: Set up a Python virtual environment with 'python-dotenv'
 
 Create a Python virtual environment for isolating this project on your machine using the following command:
 
