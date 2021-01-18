@@ -2,14 +2,9 @@
 import os
 import glob
 import yaml
-import click
 import logging
 import pandas as pd
 from pathlib import Path
-from dotenv import find_dotenv, load_dotenv
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.impute import SimpleImputer
 
 class bcolors:
     HEADER = '\033[95m'
@@ -22,9 +17,6 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-# @click.command()
-# @click.argument('input_filepath', type=click.Path(exists=True))
-# @click.argument('output_filepath', type=click.Path())
 def main(filename, input_filepath, output_filepath):
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).

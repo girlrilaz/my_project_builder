@@ -71,13 +71,17 @@ conda activate [env name]
 pip freeze > requirements.txt
 ```
 
-## Prepare the dataset and check the data processing report
+## 4. Gather the raw data
+
+Add your raw dataset in ALA_automation > data folder
+
+## 5. Prepare the dataset and check the data processing report
 
 ```
 python -m [something]
 ```
 
-## Run the entire report generation
+## 6. Run the entire report generation
 
 ```
 python -m [something]
@@ -117,6 +121,8 @@ python -m run-tests
     │                         the creator's initials, and a short `-` delimited description, e.g.
     │                         `1.0-jqp-initial-data-exploration`.
     │
+    ├── logs               <- Where generated logfiles are kept
+    │
     ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
     │   └── figures        <- Generated graphics and figures to be used in reporting
     │
@@ -135,8 +141,9 @@ python -m run-tests
     │   │   ├── predict_model.py ## Change this
     │   │   └── train_model.py ## Change this
     │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
+    │   ├── visualization  <- Scripts to create exploratory and results oriented visualizations
+    │   │   └── visualize.py
+    │   └── logger.py      <- logger module script
     │
     ├── unittests          <- where each individual unit test scripts are stored
     │   ├── __init__.py    <- Makes src a Python module
