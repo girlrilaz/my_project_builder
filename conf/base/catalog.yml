@@ -4,14 +4,19 @@
 # Local dataset
 # ---------------------------------------------------------
 
-base:
-  dir_path: ".."
-  data_path:
-    input: "data/raw"
-    output: "data/processed"
-    logs: "logs"
-  data:
-    rc: "rc.csv"
-    v1: "v1.csv"
-    v2: "v1.csv"
 
+dir_path: ".."
+
+project_path: "/Users/nraymond/Documents/Work/Account/Google/Arrow/ALA_automation"
+
+data_path:
+  input: "data/raw"
+  output: "data/processed"
+  ref: "data/reference"
+  logs: "logs"
+
+filenames:
+  rc: "rc.csv"
+  v1: "v1.csv"
+  v2: "v1.csv"
+  rc_col_ref: "reference_check.xlsx"
