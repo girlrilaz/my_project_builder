@@ -75,17 +75,20 @@ pip freeze > requirements.txt
 
 Add your raw dataset(s) in ALA_automation > data > raw folder
 
-## 5. Prepare the dataset and check the data processing report
+## 5. Perform an initial integrity scan for the raw data
 
 ```
-python -m [something]
+python -m src.data.data_integrity_scanner
 ```
 
-## 6. Run the entire report generation
+## 6. Run data cleaning
 
 ```
-python -m [something]
+python -m src.data.data_cleaning
 ```
+
+
+# TODO : Unit Testing
 
 ## Unit Testing
 
