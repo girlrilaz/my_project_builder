@@ -73,7 +73,7 @@ pip freeze > requirements.txt
 
 ## 4. Gather the raw data
 
-Add your raw dataset in ALA_automation > data folder
+Add your raw dataset(s) in ALA_automation > data > raw folder
 
 ## 5. Prepare the dataset and check the data processing report
 
@@ -115,7 +115,8 @@ python -m run-tests
     │   ├── external       <- Data from third party sources.
     │   ├── interim        <- Intermediate data that has been transformed.
     │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
+    │   ├── raw            <- The original, immutable data dump.
+    │   └── reference      <- Any reference or staging table files
     │
     ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
     │                         the creator's initials, and a short `-` delimited description, e.g.
