@@ -16,7 +16,6 @@ data_path:
   logs: "logs"
 
 filenames:
-  rc: "rc.csv"
-  v1: "v1.csv"
-  v2: "v1.csv"
   rc_col_ref: "reference_check.xlsx"
+  
+
