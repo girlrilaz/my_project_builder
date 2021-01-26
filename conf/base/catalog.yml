@@ -13,8 +13,14 @@ data_path:
   input: "data/raw"
   output: "data/processed"
   ref: "data/reference"
-  logs: "logs"
+  
+  
+logs: "logs"
 
+report:
+  figure: "reports/figures"
+  deliverable: "reports/deliverables"
+  
 filenames:
   rc_col_ref: "reference_check.xlsx"
   
