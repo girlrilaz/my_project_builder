@@ -46,7 +46,8 @@ except:
     
 # import data_processing module
 import src.data.data_processing as data_processing
-
+# import data_processing module
+import src.data.data_cleaning as data_cleaning
 
 def language_selection(languages):
 
@@ -71,14 +72,6 @@ def language_selection(languages):
             break
             
     return language_selected
-
-def run_selection():
-
-    run_value = str(input("\nPlease input the type of run eg. Deployment, Pilot 1, Pilot 2A ...etc.: "))
-    print(f"\nRun type: {run_value}")
-    
-    return run_value
-
 
 # #### Functions for Language Modification - getting the overall time taken
 
@@ -118,6 +111,7 @@ def get_time_taken_all(language_selected, rc, v1, v2):
 # #### Functions for calculating Fail Rates
 
 # #### REPORT 1 : "Near Exact Match" - v1_actual_correct_by_question
+
 
 def v1_fail_rate(v1R):
     
@@ -632,7 +626,7 @@ def main():
     
     print('\nData processing in progress...')
     # import data from data_processing module
-    raters, r1, r2, r3, languages, rc, v1, v2, run_value = data_processing.main()
+    raters, r1, r2, r3, languages, rc, v1, v2, run_value , run_value_2 = data_processing.main()
     print('Data processing completed.')
     print("\n")
     print(languages)
@@ -640,8 +634,6 @@ def main():
     # Get input language selection
     language_selected = language_selection(languages)
     
-#     # Get input of run type
-#     run_value = run_selection()
     
     # Get data from language modification processes
     rcR, v1R, v2R = get_time_taken_all(language_selected, rc, v1, v2)
