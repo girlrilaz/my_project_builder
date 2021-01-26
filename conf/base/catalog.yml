@@ -20,6 +20,7 @@ logs: "logs"
 report:
   figure: "reports/figures"
   deliverable: "reports/deliverables"
+  analysis: "reports/analysis"
   
 filenames:
   rc_col_ref: "reference_check.xlsx"

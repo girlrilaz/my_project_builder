@@ -47,6 +47,7 @@ except:
 # import data_processing module
 import src.data.data_processing as data_processing
 
+
 def language_selection(languages):
 
     while True:
@@ -80,7 +81,6 @@ def run_selection():
 
 
 # #### Functions for Language Modification - getting the overall time taken
-
 
 # function for Language Modification
 def get_time_taken(df, language_selected):
@@ -531,9 +531,8 @@ def generate_report_4(rcR):
     
     return rc_question_skill_pass_rate_answer_final
 
-# Functions to generate all reports
 
-def generate_all_fail_rate_reports(rcR, v1R, v2R):
+def generate_all_fail_rate_reports(rcR, v1R, v2R, rc, v1, v2, run_value):
     
     # Report 1 - Near Exact Match - v1_actual_correct_by_question
     v1_actual_correct_by_question =  generate_report_1(v1R)
@@ -553,7 +552,22 @@ def generate_all_fail_rate_reports(rcR, v1R, v2R):
                         "Reading Comprehension" : rc_question_skill_pass_rate,
                         "RC with Answers" : rc_question_skill_pass_rate_answer_final}
     
-    return list_of_datasets
+    if run_value == 'Deployment':
+    
+        # store all 3 summaries into a dictionary set
+        list_of_summaries = {"deployment_rc" : rc,
+                            "deployment_v1" : v1,
+                            "deployment_v2" : v2}
+        
+    else:
+        
+        # store all 3 summaries into a dictionary set
+        list_of_summaries = { run_value + "_rc" : rc,
+                              run_value + "_v1" : v1,
+                              run_value + "_v2" : v2}
+        
+    
+    return list_of_datasets, list_of_summaries
 
 def file_check_create(root_path, config, language_selected, run_value):
     
@@ -561,14 +575,55 @@ def file_check_create(root_path, config, language_selected, run_value):
 
     if not os.path.exists(run_folder):
         os.makedirs(run_folder, exist_ok=True)
+    
+    if run_value == 'Deployment':
         
-    return run_folder
+        folder_tag = 'Deployment Summary'
+        analysis_folder = os.path.join(root_path, config['report']['analysis'], folder_tag)
+
+        if not os.path.exists(analysis_folder):
+            os.makedirs(analysis_folder, exist_ok=True)
+            
+        if not os.path.exists(os.path.join(analysis_folder, 'RC')):
+            os.makedirs(os.path.join(analysis_folder, 'RC'), exist_ok=True)
+            
+        if not os.path.exists(os.path.join(analysis_folder, 'V1')):
+            os.makedirs(os.path.join(analysis_folder, 'V1'), exist_ok=True)
+            
+        if not os.path.exists(os.path.join(analysis_folder, 'V2')):
+            os.makedirs(os.path.join(analysis_folder, 'V2'), exist_ok=True)
+            
+    else:
+        
+        folder_tag = 'Grand Summary'
+        analysis_folder = os.path.join(root_path, config['report']['analysis'], folder_tag)
+
+        if not os.path.exists(analysis_folder):
+            os.makedirs(analysis_folder, exist_ok=True)
+            
+        if not os.path.exists(os.path.join(analysis_folder, 'RC')):
+            os.makedirs(os.path.join(analysis_folder, 'RC'), exist_ok=True)
+            
+        if not os.path.exists(os.path.join(analysis_folder, 'V1')):
+            os.makedirs(os.path.join(analysis_folder, 'V1'), exist_ok=True)
+            
+        if not os.path.exists(os.path.join(analysis_folder, 'V2')):
+            os.makedirs(os.path.join(analysis_folder, 'V2'), exist_ok=True)
+        
+    return run_folder, analysis_folder, folder_tag
 
 def write_fail_report_to_excel(run_folder, list_of_datasets, encode=None):
     
     with pd.ExcelWriter(os.path.join(run_folder, 'language_fail_rates.xlsx')) as writer:  
         for key, value in list_of_datasets.items():
             value.to_excel(writer, sheet_name=key, index=False, encoding=encode)
+            
+def write_summary_to_csv(analysis_folder, list_of_summaries, encode=None):
+    
+    folders = ['RC', 'V1', 'V2']
+    for lists, f in zip(list_of_summaries.items(), folders):
+        key, value = lists[0], lists[1]
+        value.to_csv(os.path.join(os.path.join(analysis_folder,f), key + '.csv'), index=False, encoding=encode)
 
 
 # #### Run all 
@@ -591,19 +646,25 @@ def main():
     # Get data from language modification processes
     rcR, v1R, v2R = get_time_taken_all(language_selected, rc, v1, v2)
     
-    print('\nGenerating language fail rates report...')
+    print('\nGenerating reports ...')
     
     # Start generating fail rate reports
-    list_of_datasets = generate_all_fail_rate_reports(rcR, v1R, v2R)
+    list_of_datasets, list_of_summaries = generate_all_fail_rate_reports(rcR, v1R, v2R, rc, v1, v2, run_value)
     
     # Check the run type and language and create folders in reports > deliverables
-    run_folder = file_check_create(root_path, config, language_selected, run_value)
+    run_folder, analysis_folder, folder_tag = file_check_create(root_path, config, language_selected, run_value)
     
     # Write reports to excel file in run_folder path
     write_fail_report_to_excel(run_folder, list_of_datasets, encode=None)
     
-    print(f"\nLanguage fail rates report completed and stored in reports > deliverables > {run_value} > {language_selected}")
-
+    print(f"\n1. Language fail rates report completed and stored in reports > deliverables > {run_value} > {language_selected}")
+    
+    # Write summaries to csv file in analysis_folder path
+    write_summary_to_csv(analysis_folder, list_of_summaries, encode=None)
+    
+    print(f"\n2. Summary report completed and stored in analysis > {folder_tag} > RC/V1/V2")
+    
 if __name__ == "__main__":
      
     main()
+
