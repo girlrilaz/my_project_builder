@@ -13,6 +13,7 @@ data_path:
   input: "data/raw"
   output: "data/processed"
   ref: "data/reference"
+  survey: "data/reference/Survey"
   
   
 logs: "logs"
