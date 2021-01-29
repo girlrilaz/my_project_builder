@@ -14,7 +14,7 @@ data_path:
   output: "data/processed"
   ref: "data/reference"
   survey: "data/reference/Survey"
-  
+  post_survey: "data/reference/Post Assessment Survey"
   
 logs: "logs"
 
