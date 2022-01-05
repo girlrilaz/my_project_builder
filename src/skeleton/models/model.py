@@ -6,7 +6,7 @@
 # internal
 from .base_model import BaseModel
 from utils.dataloader import DataLoader
-from utils.logger import get_logger
+from utils.logger_WIP import get_logger
 from executor.model_trainer import ModelTrainer
 
 # external
@@ -56,8 +56,8 @@ class ModelName(BaseModel):
         trainer.train()
 
     def evaluate(self):
-        
-        """Predicts resuts for the test dataset"""
+
+        """Predicts results for the test dataset"""
 
         predictions = []
         LOG.info(f'Model predictions for test dataset')
@@ -66,8 +66,8 @@ class ModelName(BaseModel):
             DataLoader().validate_schema(im[0])
             break
 
-        for image, mask in self.test_dataset:
-            tf.print(image)
-            # LOG.info(f'Predicting segmentation map {image}')
-            predictions.append(self.model.predict(image))
+        for predicted in self.test_dataset:
+            LOG.info(f'Predicting segmentation map {predicted}')
+            predictions.append(self.model.predict(predicted))
+            
         return predictions

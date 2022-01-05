@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
 """Config class"""
 
+# standard library
 import json
-
 
 class Config:
     """Config class which contains data, train and model hyperparameters"""
 
     def __init__(self, data, train, model):
         self.data = data
-        self.train = train
-        self.model = model
+        # self.train = train
+        # self.model = model
 
     @classmethod
     def from_json(cls, cfg):
         """Creates config from json"""
         params = json.loads(json.dumps(cfg), object_hook=HelperObject)
-        return cls(params.data, params.train, params.model)
+        return cls(params.data)
+        #return cls(params.data, params.train, params.model) # if cfg has more than one params
 
 
 class HelperObject(object):
