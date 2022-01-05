@@ -1,9 +1,9 @@
 #!/usr/bin/python 
 
 import sys
-sys.path.append('.')
+sys.path.append('./tests')
 
 import unittest
 
-from tests.unittests import *
+from unittests import *
 unittest.main()
