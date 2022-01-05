@@ -3,7 +3,9 @@
 
 CFG = {
     "data": {
-        "path": "",
-        "bucket": ""
+        "source" : '',
+        "type" : '',
+        "path": '',
+        "bucket": ''
     }
 }

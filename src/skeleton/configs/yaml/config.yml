@@ -1,6 +1,8 @@
 # Here you can define all your data sets by using simple YAML syntax.
 
 data:
+  source : "",
+  type : "",
   path: ""
   bucket: ""
 
