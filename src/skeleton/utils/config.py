@@ -7,7 +7,6 @@ import yaml
 
 class Config:
     """Config class which contains data, train and model hyperparameters"""
-
     def __init__(self, data):
         self.data = data
         # self.train = train
@@ -23,14 +22,14 @@ class Config:
     @classmethod
     def from_json_file(cls):
         """Creates config from configs/json"""
-        with open('configs/json/config.json', encoding="utf-8") as filename:
+        with open(f'configs/json/config.json', encoding="utf-8") as filename:
             params = json.load(filename, object_hook=HelperObject)
         return cls(params.data)
 
     @classmethod
     def from_yaml(cls):
         """Creates config from configs/yaml"""
-        with open('configs/yaml/config.yml', encoding="utf-8") as filename:
+        with open(f'configs/yaml/config.yml', encoding="utf-8") as filename:
             params = json.loads(json.dumps(yaml.safe_load(filename)), object_hook=HelperObject)
         return cls(params.data)
 

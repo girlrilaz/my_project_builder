@@ -1,9 +1,11 @@
-#!/usr/bin/python 
-
+#!/usr/bin/python
+"""Run all unit testing"""
+#standard library
+import unittest
 import sys
 sys.path.append('./tests')
 
-import unittest
-
+#internal
 from unittests import *
+
 unittest.main()

@@ -1,7 +1,14 @@
+"""initialize unittests"""
+
 import unittest
 import getopt
 import sys
 import os
+
+from .EnvironmentTests import *
+# from ApiTests import *
+# from ModelTests import *
+# from LoggerTests import *
 
 ## parse inputs
 try:
@@ -22,19 +29,15 @@ for o, a in optlist:
         VERBOSE = True
 
 ## Environment tests
-from EnvironmentTests import *
 EnvironmentTestSuite = unittest.TestLoader().loadTestsFromTestCase(EnvironmentTest)
 
 # ## api tests
-# from ApiTests import *
 # ApiTestSuite = unittest.TestLoader().loadTestsFromTestCase(ApiTest)
 
 # ## model tests
-# from ModelTests import *
 # ModelTestSuite = unittest.TestLoader().loadTestsFromTestCase(ModelTest)
 
 # ## logger tests
-# from LoggerTests import *
 # LoggerTestSuite = unittest.TestLoader().loadTestsFromTestCase(LoggerTest)
 
 MainSuite = unittest.TestSuite([EnvironmentTestSuite]) #LoggerTestSuite,ModelTestSuite,ApiTestSuite

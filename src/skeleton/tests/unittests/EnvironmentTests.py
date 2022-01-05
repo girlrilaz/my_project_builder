@@ -1,3 +1,4 @@
+"""Environment unit test"""
 import sys
 import unittest
 
@@ -7,7 +8,6 @@ class EnvironmentTest(unittest.TestCase):
     """
     test the essential functionality
     """
-        
     def test_01_environment(self):
         """
         ensure environment requirement is satisfied
@@ -19,13 +19,11 @@ class EnvironmentTest(unittest.TestCase):
         elif REQUIRED_PYTHON == "python3":
             required_major = 3
         else:
-            raise ValueError("Unrecognized python interpreter: {}".format(
-                REQUIRED_PYTHON))
+            raise ValueError(f"Unrecognized python interpreter: {REQUIRED_PYTHON}")
 
         if system_major != required_major:
             raise TypeError(
-                "This project requires Python {}. Found: Python {}".format(
-                    required_major, sys.version))
+                f"This project requires Python {required_major}. Found: Python {sys.version}")
         else:
             print(">>> Development environment passes all tests!")
 
