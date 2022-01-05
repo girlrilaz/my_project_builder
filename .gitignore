@@ -128,25 +128,26 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Folders
-data/
-reports/
+# # Folders
+# data/
+# reports/
 
 # ignore all local configuration
-conf/local/**
-!conf/local/.gitkeep
+src/configs/**
+!src/configs/.gitkeep
 
 # ignore potentially sensitive credentials files
-conf/**/*credentials*
+src/configs/**/*credentials*
+src/configs/**/*credentials*
 
-# ignore everything in the following folders
-data/**
-logs/**
-reports/**
+# # ignore everything in the following folders
+# data/**
+# logs/**
+# reports/**
 
-# except their sub-folders
-!data/**/
-!logs/**/
+# # except their sub-folders
+# !data/**/
+# !logs/**/
 
 # also keep all .gitkeep files
 !.gitkeep
