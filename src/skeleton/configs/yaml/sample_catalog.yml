@@ -1,0 +1,29 @@
+# Here you can define all your data sets by using simple YAML syntax.
+
+# ---------------------------------------------------------
+# Local dataset
+# ---------------------------------------------------------
+
+
+dir_path: ".."
+
+project_path: "/Users/nraymond/Documents/Work/Account/Google/Arrow/ALA_automation"
+
+data_path:
+  input: "data/raw"
+  output: "data/processed"
+  ref: "data/reference"
+  survey: "data/reference/Survey"
+  post_survey: "data/reference/Post Assessment Survey"
+  
+logs: "logs"
+
+report:
+  figure: "reports/figures"
+  deliverable: "reports/deliverables"
+  analysis: "reports/analysis"
+  
+filenames:
+  rc_col_ref: "reference_check.xlsx"
+  
+
