@@ -4,7 +4,7 @@
 import os
 
 #internal
-from utils.logger import get_logger
+from utils.logger_WIP import get_logger
 
 #external
 import tensorflow as tf

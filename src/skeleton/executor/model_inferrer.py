@@ -1,7 +1,7 @@
 import tensorflow as tf
 import numpy as np
 
-from utils.plot_image import display
+from utils.visualize_WIP import display
 
 from utils.config import Config
 
