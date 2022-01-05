@@ -41,6 +41,7 @@ class HelperObject(object):
         self.__dict__.update(dict_)
 
 
+# TODO: DELETE LATER
 # if __name__ == '__main__':
 
 #     # from_json
