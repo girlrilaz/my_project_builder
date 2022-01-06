@@ -4,14 +4,20 @@
 # standard library
 import sys
 import pandas as pd
-sys.path.append('.')
+
+# external
+#import jsonschema
+# import pandera as pa
+from sklearn.model_selection import train_test_split
+# from sklearn.pipeline import Pipeline
+# from sklearn.preprocessing import StandardScaler, OneHotEncoder
+# from sklearn.impute import SimpleImputer
+# from sklearn.compose import ColumnTransformer
 
 # internal
 from configs.module.pandas_schema import SCHEMA
 
-# external
-import jsonschema
-import pandera as pa
+sys.path.append('.')
 
 class DataLoader:
 
@@ -19,77 +25,38 @@ class DataLoader:
 
     @staticmethod
     def load_data(data_config):
-
         """Loads dataset from path"""
-        # data = pd.read_csv(data_config.path)
-        data = pd.read_csv(data_config['data']['path'], delimiter=';')
-        return data
-        #return tfds.load(data_config.path, with_info=data_config.load_with_info) # tensorflow dataset - local machine
-        #return tfds.load(name=data_config.path, data_dir=data_config.bucket, with_info=data_config.load_with_info) # in cloud bucket
+        return pd.read_csv(data_config.path, delimiter=';')
 
     @staticmethod
     def validate_schema(data_point):
+        """Data schema validation"""
         SCHEMA.validate(data_point)
         #jsonschema.validate({'data':data_point.tolist()},SCHEMA)
 
+    @staticmethod
+    def preprocess_data(dataset, test_size, random_state):
+        """ Preprocess and splits into training and test"""
+        return train_test_split(dataset, test_size=test_size, random_state=random_state)
+
+    """
     # @staticmethod
-    # def preprocess_data(dataset):
+    # def preprocess_pipeline(datapoint, ):
 
-    #     """ Preprocess and splits into training and test"""
+    #     #Loads and preprocess a datapoint with pipeline
 
-    #     train = dataset['train'].map(lambda data: DataLoader._preprocess_train(data))
-    #     test = dataset['test'].map(lambda data: DataLoader._preprocess_test(data))
+    #     ## preprocessing pipeline
+    #     numeric_features = ['age', 'balance', 'day', 'duration', 'campaign', 'pdays', 'previous']
+    #     numeric_transformer = Pipeline(steps=[('imputer', SimpleImputer(strategy='mean')),
+    #                                         ('scaler', StandardScaler())])
 
-    #     train_dataset = train
-    #     test_dataset = test
+    #     categorical_features = ['job', 'marital', 'education', 'default', 'housing', 'loan', 'contact', 'month', 'poutcome','y']
+    #     categorical_transformer = Pipeline(steps=[('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
+    #                                             ('onehot', OneHotEncoder(handle_unknown='ignore'))])
 
-    #     return train_dataset, test_dataset
-
-    # @staticmethod
-    # def _preprocess_train(datapoint):
-
-    #     """ Loads and preprocess a single training datapoint """
-        
-    #     # example, normalizing datapoints
-    #     for dp in datapoint:
-    #         processed_data = DataLoader._normalize(dp)
+    #     processed_data = ColumnTransformer(transformers=[('num', numeric_transformer, numeric_features),
+    #                                                 ('cat', categorical_transformer, categorical_features)])
 
     #     return processed_data
+    """
 
-    # @staticmethod
-    # def _preprocess_test(datapoint):
-
-    #     """ Loads and preprocess a single test images """
-
-    #     # example, normalizing datapoints
-    #     for dp in datapoint:
-    #         processed_data = DataLoader._normalize(dp)
-
-    #     return processed_data
-
-    # @staticmethod
-    # def _normalize(single_datapoint):
-
-    #     """ Normalise data"""
-        
-    #     normalized_data = ''
-
-    #     return normalized_data
-
-
-# TODO: DELETE LATER
-if __name__ == '__main__':
-    
-    data_config = {
-                    "data": {
-                        "source" : "local",
-                        "type" : "csv",
-                        "path": "data/raw/bank.csv",
-                        "bucket": ""
-                    }
-                }
- 
-    df = DataLoader().load_data(data_config)
-    # print(df.info())
-
-    validated_df = DataLoader().validate_schema(df)
