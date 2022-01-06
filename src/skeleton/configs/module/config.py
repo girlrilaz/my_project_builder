@@ -3,9 +3,9 @@
 
 CFG = {
     "data": {
-        "source" : '',
-        "type" : '',
-        "path": '',
+        "source" : 'local',
+        "type" : 'csv',
+        "path": 'data/raw/bank.csv',
         "bucket": ''
     }
 }

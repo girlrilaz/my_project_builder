@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
 """Data Loader"""
 
+# standard library
+import sys
+import pandas as pd
+sys.path.append('.')
+
 # internal
-from configs.module.json_schema import SCHEMA
+from configs.module.pandas_schema import SCHEMA
 
 # external
 import jsonschema
+import pandera as pa
 
 class DataLoader:
 
@@ -15,15 +21,16 @@ class DataLoader:
     def load_data(data_config):
 
         """Loads dataset from path"""
-
-        data=""
+        # data = pd.read_csv(data_config.path)
+        data = pd.read_csv(data_config['data']['path'], delimiter=';')
         return data
         #return tfds.load(data_config.path, with_info=data_config.load_with_info) # tensorflow dataset - local machine
         #return tfds.load(name=data_config.path, data_dir=data_config.bucket, with_info=data_config.load_with_info) # in cloud bucket
 
-    # @staticmethod
-    # def validate_schema(data_point):
-    #     jsonschema.validate({'data':data_point.tolist()},SCHEMA)
+    @staticmethod
+    def validate_schema(data_point):
+        SCHEMA.validate(data_point)
+        #jsonschema.validate({'data':data_point.tolist()},SCHEMA)
 
     # @staticmethod
     # def preprocess_data(dataset):
@@ -72,5 +79,17 @@ class DataLoader:
 
 # TODO: DELETE LATER
 if __name__ == '__main__':
+    
+    data_config = {
+                    "data": {
+                        "source" : "local",
+                        "type" : "csv",
+                        "path": "data/raw/bank.csv",
+                        "bucket": ""
+                    }
+                }
+ 
+    df = DataLoader().load_data(data_config)
+    # print(df.info())
 
-    dload = DataLoader()
+    validated_df = DataLoader().validate_schema(df)
