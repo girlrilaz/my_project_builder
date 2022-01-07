@@ -46,19 +46,21 @@ class ModelName(BaseModel):
         LOG.info(f'Loading {self.config.data.path} dataset...' )
 
         self.dataset = DataLoader().load_data(self.config.data)
-        self.train_dataset, self.test_dataset = DataLoader.preprocess_data(self.dataset, self.test_size, self.random_state)
+        self.train_dataset, self.test_dataset = DataLoader().preprocess_data(self.dataset, self.test_size, self.random_state)
 
-        # TODO: uncomment when ready to use
-        # self.X_train= DataLoader().feature_pipeline(self.numerical, self.categorical).fit(self.train_dataset).transform(self.train_dataset)
-        # self.y_train = DataLoader().target_pipeline(self.target).fit(self.train_dataset[self.target]).transform(self.train_dataset[self.target])
+        self.X_train= DataLoader().feature_pipeline(self.numerical, self.categorical).fit(self.train_dataset).transform(self.train_dataset)
+        self.y_train = DataLoader().target_pipeline(self.target).fit(self.train_dataset[self.target]).transform(self.train_dataset[self.target])
+
+        self.X_test= DataLoader().feature_pipeline(self.numerical, self.categorical).fit(self.test_dataset).transform(self.test_dataset)
+        self.y_test = DataLoader().target_pipeline(self.target).fit(self.test_dataset[self.target]).transform(self.test_dataset[self.target])
 
     def build(self):
 
         """
         Create the xgboost classifier with predefined parameters, user can overwright it by passing kw args
         """
-        param = vars(self.model_params)
-        self.model = XGBClassifier(**param)
+        init_params = vars(self.model_params) #set in config
+        self.model = XGBClassifier(**init_params, use_label_encoder=False)
 
         LOG.info('Model was built successfully')
 
@@ -68,7 +70,7 @@ class ModelName(BaseModel):
 
         LOG.info('Training started')
 
-        trainer = ModelTrainer(self.model, self.train_dataset)
+        trainer = ModelTrainer(self.model, self.X_train, self.y_train, vars(self.model_params))
         trainer.train()
 
     # def evaluate(self):
