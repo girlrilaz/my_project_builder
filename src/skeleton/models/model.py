@@ -8,13 +8,13 @@ sys.path.append('.')
 # internal
 from .base_model import BaseModel
 from utils.dataloader import DataLoader
-# from utils.logger_WIP import get_logger
-# from executor.model_trainer import ModelTrainer
+from utils.logger import get_logger
+from executor.model_trainer import ModelTrainer
 
 # external
 from xgboost import XGBClassifier
 
-# LOG = get_logger('unet')
+LOG = get_logger('change_to_model_name')
 
 class ModelName(BaseModel):
 
@@ -23,7 +23,7 @@ class ModelName(BaseModel):
     def __init__(self, config):
         super().__init__(config)
 
-        # self.model = None
+        self.model = None
         # self.output_channels = self.config.model.output
         self.dataset = None
         self.info = None
@@ -43,8 +43,7 @@ class ModelName(BaseModel):
 
         """Loads and Preprocess data """
 
-        # LOG.info(f'Loading {self.config.data.path} dataset...' )
-        print(f'Loading {self.config.data.path} dataset...' )
+        LOG.info(f'Loading {self.config.data.path} dataset...' )
 
         self.dataset = DataLoader().load_data(self.config.data)
         self.train_dataset, self.test_dataset = DataLoader.preprocess_data(self.dataset, self.test_size, self.random_state)
@@ -61,17 +60,16 @@ class ModelName(BaseModel):
         param = vars(self.model_params)
         self.model = XGBClassifier(**param)
 
-        # # LOG.info('Model was built successfully')
-        print('Model was built successfully')
+        LOG.info('Model was built successfully')
 
-    # def train(self):
+    def train(self):
 
-    #     """Compiles and trains the model with train dataset"""
+        """Compiles and trains the model with train dataset"""
 
-    #     LOG.info('Training started')
+        LOG.info('Training started')
 
-    #     trainer = ModelTrainer(self.model, self.train_dataset)
-    #     trainer.train()
+        trainer = ModelTrainer(self.model, self.train_dataset)
+        trainer.train()
 
     # def evaluate(self):
 

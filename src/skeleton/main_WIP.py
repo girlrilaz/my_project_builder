@@ -11,7 +11,7 @@ def run():
     model = ModelName(CFG)
     model.load_data()
     model.build()
-    # model.train()
+    model.train()
     # model.evaluate()
 
 
