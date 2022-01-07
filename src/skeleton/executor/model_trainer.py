@@ -36,9 +36,27 @@ class ModelTrainer:
         LOG.info(f'Start model training ....')
 
         LOG.info(f'.... grid searchingå')
- 
+
+        grid_params =  {
+            "nthread":[4],
+            "booster": ["gbtree"], 
+            "n_estimators": [20, 40],
+            "objective": ["binary:logistic"], 
+            "learning_rate" : [0.25, 0.5],
+            "eval_metric": ["error"], 
+            "eta": [0.3], 
+            "gamma": [0], 
+            "max_depth": [6], 
+            "min_child_weight": [4], 
+            "max_delta_step": [0], 
+            "subsample": [1], 
+            "colsample_bytree": [1], 
+            "seed": [0], 
+            "scale_pos_weight": [1]
+        } 
+    
         #grid = GridSearchCV(self.model, param_grid=self.init_params, cv=10, n_jobs=1)
-        grid =  GridSearchCV(self.model, param_grid=self.init_params, n_jobs=5, 
+        grid =  GridSearchCV(self.model, param_grid=grid_params, n_jobs=5, 
                    cv=StratifiedKFold(n_splits=10, random_state=0, shuffle=True), 
                    scoring='roc_auc',
                    verbose=2, refit=True)
@@ -47,10 +65,13 @@ class ModelTrainer:
 
         best_params = grid.best_params_
         best_params = {re.sub("clf__","",key):value for key,value in best_params.items()}
-        
+
         ## fit model on training data
         final_model = XGBClassifier(**best_params, use_label_encoder=False)
         final_model.fit(self.X_train,self.y_train)
+
+        print(self.model)
+        print(final_model)
 
         # LOG.info(f"Saved checkpoint: {self.checkpoint_path}")
 

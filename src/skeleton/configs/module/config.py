@@ -20,9 +20,9 @@ CFG = {
         "params": {
             "nthread":[4],
             "booster": ["gbtree"], 
-            "n_estimators": [5],
+            "n_estimators": [20],
             "objective": ["binary:logistic"], 
-            "learning_rate" : [0.05],
+            "learning_rate" : [0.5],
             "eval_metric": ["error"], 
             "eta": [0.3], 
             "gamma": [0], 

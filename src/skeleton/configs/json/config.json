@@ -15,19 +15,22 @@
         "metrics": ["accuracy"]
     },
     "model": { 
-        "params": {"booster":"gbtree", 
-                   "n_estimators": 5,
-                   "objective":"binary:logistic", 
-                   "learning_rate" : 0.05,
-                   "eval_metric":"error", 
-                    "eta": 0.3, 
-                    "gamma": 0, 
-                    "max_depth": 7, 
-                    "min_child_weight": 5, 
-                    "max_delta_step": 0, 
-                    "subsample": 1, 
-                    "colsample_bytree": 1, 
-                    "seed": 0, 
-                    "scale_pos_weight": 1}
+        "params": {
+            "nthread":[4],
+            "booster":"gbtree", 
+            "n_estimators": 5,
+            "objective":"binary:logistic", 
+            "learning_rate" : 0.05,
+            "eval_metric":"error", 
+            "eta": 0.3, 
+            "gamma": 0, 
+            "max_depth": 7, 
+            "min_child_weight": 5, 
+            "max_delta_step": 0, 
+            "subsample": 1, 
+            "colsample_bytree": 1, 
+            "seed": 0, 
+            "scale_pos_weight": 1
+        }
     }
 }
