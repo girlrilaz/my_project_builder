@@ -9,10 +9,10 @@ import pandas as pd
 #import jsonschema
 # import pandera as pa
 from sklearn.model_selection import train_test_split
-# from sklearn.pipeline import Pipeline
-# from sklearn.preprocessing import StandardScaler, OneHotEncoder
-# from sklearn.impute import SimpleImputer
-# from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.impute import SimpleImputer
+from sklearn.compose import ColumnTransformer
 
 # internal
 from configs.module.pandas_schema import SCHEMA
@@ -39,24 +39,50 @@ class DataLoader:
         """ Preprocess and splits into training and test"""
         return train_test_split(dataset, test_size=test_size, random_state=random_state)
 
-    """
-    # @staticmethod
-    # def preprocess_pipeline(datapoint, ):
 
-    #     #Loads and preprocess a datapoint with pipeline
+    @staticmethod
+    def feature_pipeline(numeric_features, categorical_features):
 
-    #     ## preprocessing pipeline
-    #     numeric_features = ['age', 'balance', 'day', 'duration', 'campaign', 'pdays', 'previous']
-    #     numeric_transformer = Pipeline(steps=[('imputer', SimpleImputer(strategy='mean')),
-    #                                         ('scaler', StandardScaler())])
+        """Loads and preprocess a datapoint with pipeline"""
 
-    #     categorical_features = ['job', 'marital', 'education', 'default', 'housing', 'loan', 'contact', 'month', 'poutcome','y']
-    #     categorical_transformer = Pipeline(steps=[('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
-    #                                             ('onehot', OneHotEncoder(handle_unknown='ignore'))])
+    #         num_pipeline = Pipeline([
+    #    ('selector', DataFrameSelector(num_attrs)),
+    #    ('imputer', preprocessing.Imputer(strategy="median")),
+    #    ('std_scaler', preprocessing.StandardScaler()),
+    # ])
 
-    #     processed_data = ColumnTransformer(transformers=[('num', numeric_transformer, numeric_features),
-    #                                                 ('cat', categorical_transformer, categorical_features)])
+    # cat_pipeline = Pipeline([
+    #     ('selector', DataFrameSelector(cat_attrs)),
+    #     ('cat_enc', CategoricalEncoder(encoding="onehot-dense")),
+    # ])
+    
+    # full_pipeline = FeatureUnion(transformer_list=[
+    #     ('num_pipeline', num_pipeline),
+    #     ('cat_pipeline', cat_pipeline),
+    # ])
 
-    #     return processed_data
-    """
+        ## preprocessing pipeline
+        # numeric_features = ['age', 'balance', 'day', 'duration', 'campaign', 'pdays', 'previous']
+        numerical_pipeline = Pipeline(steps=[('imputer', SimpleImputer(strategy='mean')),
+                                            ('scaler', StandardScaler())])
+
+        # categorical_features = ['job', 'marital', 'education', 'default', 'housing', 'loan', 'contact', 'month', 'poutcome']
+        categorical_pipeline = Pipeline(steps=[('imputer', SimpleImputer(strategy='constant', fill_value='missing')),
+                                                ('onehot', OneHotEncoder(handle_unknown='ignore'))])
+                                                
+
+        X_pipeline = ColumnTransformer(transformers=[('num', numerical_pipeline, numeric_features),
+                                                    ('cat', categorical_pipeline, categorical_features)])
+
+        return X_pipeline
+
+    @staticmethod
+    def target_pipeline(numeric_features, categorical_features):
+
+        #Loads and preprocess a datapoint with pipeline
+
+        y_pipeline = ""
+
+        return y_pipeline
+
 

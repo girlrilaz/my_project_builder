@@ -28,6 +28,7 @@ class ModelName(BaseModel):
         # self.output_channels = self.config.model.output
         self.dataset = None
         self.info = None
+        self.pipeline = None
         self.train_dataset = []
         self.test_dataset = []
         self.numerical = self.config.data.numerical
@@ -41,17 +42,20 @@ class ModelName(BaseModel):
         """Loads and Preprocess data """
 
         # LOG.info(f'Loading {self.config.data.path} dataset...' )
+        print(f'Loading {self.config.data.path} dataset...' )
 
         self.dataset = DataLoader().load_data(self.config.data)
         self.train_dataset, self.test_dataset = DataLoader.preprocess_data(self.dataset, self.test_size, self.random_state)
 
-    # def build(self):
+    def build(self):
 
-    #     """ Builds the model based """
+        """ Builds the model based """
+        self.pipeline = DataLoader().ml_pipeline(self.numerical, self.categorical)
 
-    #     self.model = ""
+        self.model = ""
 
-    #     LOG.info('Model was built successfully')
+        # LOG.info('Model was built successfully')
+        print('Model was built successfully')
 
     # def train(self):
 

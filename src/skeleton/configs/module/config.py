@@ -8,7 +8,7 @@ CFG = {
         "path": "data/raw/bank.csv",
         "bucket": "",
         "numerical": ["age", "balance", "day", "duration", "campaign", "pdays", "previous"],
-        "categorical" : ["job", "marital", "education", "default", "housing", "loan", "contact", "month", "poutcome","y"]
+        "categorical" : ["job", "marital", "education", "default", "housing", "loan", "contact", "month", "poutcome"]
     },
     "train": {
         "target_col": "y",

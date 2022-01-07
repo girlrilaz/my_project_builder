@@ -10,14 +10,15 @@ class BaseModel(ABC):
     def __init__(self, cfg):
         self.config = Config.from_json(cfg) # from module
         # self.config = Config.from_json_file() # from json file
+        # self.config = Config.from_yaml() # from yaml file
 
     @abstractmethod
     def load_data(self):
         pass
 
-    # @abstractmethod
-    # def build(self):
-    #     pass
+    @abstractmethod
+    def build(self):
+        pass
 
     # @abstractmethod
     # def train(self):

@@ -10,7 +10,7 @@ def run():
     """Builds model, loads data, trains and evaluates"""
     model = ModelName(CFG)
     model.load_data()
-    # model.build()
+    model.build()
     # model.train()
     # model.evaluate()
 
