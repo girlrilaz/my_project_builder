@@ -17,7 +17,7 @@ CFG = {
         "metrics": ["accuracy"]
     },
     "model": {
-        "params": [{"booster":"gbtree", 
+        "params": {"booster":"gbtree", 
                   "objective":"binary:logistic", 
                   "eval_metric":"error", 
                    "eta": 0.3, 
@@ -30,7 +30,7 @@ CFG = {
                    "silent": 0, 
                    "seed": 0, 
                    "base_score'": 0.5, 
-                   "scale_pos_weight": 1}],
+                   "scale_pos_weight": 1}
         # "booster": "gbtree",
         # "objective": "binary:logistic",
         # "eval_metric": "error",

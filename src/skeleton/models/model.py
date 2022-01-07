@@ -12,6 +12,7 @@ from utils.dataloader import DataLoader
 # from executor.model_trainer import ModelTrainer
 
 # external
+from xgboost import XGBClassifier
 
 # LOG = get_logger('unet')
 
@@ -57,19 +58,8 @@ class ModelName(BaseModel):
         """
         Create the xgboost classifier with predefined parameters, user can overwright it by passing kw args
         """
-
-        print(self.model_params)
-
-        # param['scale_pos_weight']= 1
-
-        # param = {}
-        # if self.model_params:
-        #     for k, v in self.model_params.items():
-        #         param[k] = self.model_params[k]
-        
-        # print(param)
-                    
-        # self.model = XGBClassifier(**param)
+        param = vars(self.model_params)
+        self.model = XGBClassifier(**param)
 
         # # LOG.info('Model was built successfully')
         print('Model was built successfully')
