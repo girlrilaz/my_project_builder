@@ -14,8 +14,6 @@ from utils.dataloader import DataLoader
 # external
 
 # LOG = get_logger('unet')
-# print(f'Tensorflow version: {tf.__version__}')
-# tf.config.set_visible_devices([], 'GPU')
 
 class ModelName(BaseModel):
 
@@ -28,14 +26,17 @@ class ModelName(BaseModel):
         # self.output_channels = self.config.model.output
         self.dataset = None
         self.info = None
-        self.pipeline = None
+        self.model = None
+        self.X_pipeline = []
+        self.y_pipeline = []
         self.train_dataset = []
         self.test_dataset = []
-        self.numerical = self.config.data.numerical
-        self.categorical = self.config.data.categorical
-        self.target_col = self.config.train.target_col
+        self.numerical = self.config.data.numerical_att
+        self.categorical = self.config.data.categorical_att
+        self.target = self.config.train.target_att
         self.test_size = self.config.train.test_size
         self.random_state = self.config.train.random_state
+        self.model_params = self.config.model.params
 
     def load_data(self):
 
@@ -47,14 +48,30 @@ class ModelName(BaseModel):
         self.dataset = DataLoader().load_data(self.config.data)
         self.train_dataset, self.test_dataset = DataLoader.preprocess_data(self.dataset, self.test_size, self.random_state)
 
+        # TODO: uncomment when ready to use
+        # self.X_train= DataLoader().feature_pipeline(self.numerical, self.categorical).fit(self.train_dataset).transform(self.train_dataset)
+        # self.y_train = DataLoader().target_pipeline(self.target).fit(self.train_dataset[self.target]).transform(self.train_dataset[self.target])
+
     def build(self):
 
-        """ Builds the model based """
-        self.pipeline = DataLoader().ml_pipeline(self.numerical, self.categorical)
+        """
+        Create the xgboost classifier with predefined parameters, user can overwright it by passing kw args
+        """
 
-        self.model = ""
+        print(self.model_params)
 
-        # LOG.info('Model was built successfully')
+        # param['scale_pos_weight']= 1
+
+        # param = {}
+        # if self.model_params:
+        #     for k, v in self.model_params.items():
+        #         param[k] = self.model_params[k]
+        
+        # print(param)
+                    
+        # self.model = XGBClassifier(**param)
+
+        # # LOG.info('Model was built successfully')
         print('Model was built successfully')
 
     # def train(self):

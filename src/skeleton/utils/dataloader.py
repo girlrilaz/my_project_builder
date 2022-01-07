@@ -10,7 +10,7 @@ import pandas as pd
 # import pandera as pa
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
 
@@ -41,25 +41,8 @@ class DataLoader:
 
 
     @staticmethod
-    def feature_pipeline(numeric_features, categorical_features):
-
+    def feature_pipeline(numerical_features, categorical_features):
         """Loads and preprocess a datapoint with pipeline"""
-
-    #         num_pipeline = Pipeline([
-    #    ('selector', DataFrameSelector(num_attrs)),
-    #    ('imputer', preprocessing.Imputer(strategy="median")),
-    #    ('std_scaler', preprocessing.StandardScaler()),
-    # ])
-
-    # cat_pipeline = Pipeline([
-    #     ('selector', DataFrameSelector(cat_attrs)),
-    #     ('cat_enc', CategoricalEncoder(encoding="onehot-dense")),
-    # ])
-    
-    # full_pipeline = FeatureUnion(transformer_list=[
-    #     ('num_pipeline', num_pipeline),
-    #     ('cat_pipeline', cat_pipeline),
-    # ])
 
         ## preprocessing pipeline
         # numeric_features = ['age', 'balance', 'day', 'duration', 'campaign', 'pdays', 'previous']
@@ -71,18 +54,31 @@ class DataLoader:
                                                 ('onehot', OneHotEncoder(handle_unknown='ignore'))])
                                                 
 
-        X_pipeline = ColumnTransformer(transformers=[('num', numerical_pipeline, numeric_features),
+        X_pipeline = ColumnTransformer(transformers=[('num', numerical_pipeline, numerical_features),
                                                     ('cat', categorical_pipeline, categorical_features)])
 
         return X_pipeline
 
     @staticmethod
-    def target_pipeline(numeric_features, categorical_features):
+    def target_pipeline(target_features):
+        """Loads and preprocess a datapoint with pipeline"""
 
-        #Loads and preprocess a datapoint with pipeline
-
-        y_pipeline = ""
+        y_pipeline = Pipeline(steps=[('label_enc', MyLabelEncoder())])
 
         return y_pipeline
 
+
+## custom LabelEncoder as the org doesn't work in pipeline - this is a workaround
+class MyLabelEncoder(LabelEncoder):
+    """
+     custom LabelEncoder as the org doesn't work with the pipeline
+    """
+    def fit_transform(self, X, y=None):
+        return super(MyLabelEncoder, self).fit_transform(X)
+    
+    def fit(self, X, y=None):
+        return super(MyLabelEncoder, self).fit(X.values.ravel())
+    
+    def transform(self, X):
+        return super(MyLabelEncoder, self).transform(X.values.ravel())
 
