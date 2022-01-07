@@ -5,11 +5,11 @@
         "type" : "csv",
         "path": "data/raw/bank.csv",
         "bucket": "",
-        "numerical": ["age", "balance", "day", "duration", "campaign", "pdays", "previous"],
-        "categorical" : ["job", "marital", "education", "default", "housing", "loan", "contact", "month", "poutcome"]
+        "numerical_att": ["age", "balance", "day", "duration", "campaign", "pdays", "previous"],
+        "categorical_att" : ["job", "marital", "education", "default", "housing", "loan", "contact", "month", "poutcome"]
     },
     "train": {
-        "target_col":["y"],
+        "target_att":["y"],
         "test_size": 0.33,
         "random_state": 123,
         "metrics": ["accuracy"]

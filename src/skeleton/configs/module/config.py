@@ -17,34 +17,21 @@ CFG = {
         "metrics": ["accuracy"]
     },
     "model": {
-        "params": {"booster":"gbtree", 
-                  "objective":"binary:logistic", 
-                  "eval_metric":"error", 
-                   "eta": 0.3, 
-                   "gamma": 0, 
-                   "max_depth": 10, 
-                   "min_child_weight": 1, 
-                   "max_delta_step": 0, 
-                   "subsample": 1, 
-                   "colsample_bytree": 1, 
-                   "silent": 0, 
-                   "seed": 0, 
-                   "base_score'": 0.5, 
-                   "scale_pos_weight": 1}
-        # "booster": "gbtree",
-        # "objective": "binary:logistic",
-        # "eval_metric": "error",
-        # "eta": 0.3,
-        # "gamma": 0,
-        # "max_depth": 10,
-        # "min_child_weight": 1,
-        # "max_delta_step": 0,
-        # "subsample": 1,
-        # "colsample_bytree": 1,
-        # "silent": 0,
-        # "seed": 0,
-        # "base_score'": 0.5,
-        # "scale_pos_weight": 1
+        "params": {
+            "booster":"gbtree", 
+            "objective":"binary:logistic", 
+            "eval_metric":"error", 
+            "eta": 0.3, 
+            "gamma": 0, 
+            "max_depth": 10, 
+            "min_child_weight": 1, 
+            "max_delta_step": 0, 
+            "subsample": 1, 
+            "colsample_bytree": 1, 
+            "silent": 0, 
+            "seed": 0, 
+            "base_score'": 0.5, 
+            "scale_pos_weight": 1}
     }
 }
 
