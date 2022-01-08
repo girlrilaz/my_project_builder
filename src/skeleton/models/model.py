@@ -2,9 +2,10 @@
 """Unet model"""
 
 # standard library
-import sys
-sys.path.append('.')
+import os, sys
 import pandas as pd
+import pickle
+sys.path.append('.')
 
 # internal
 from .base_model import BaseModel
@@ -50,15 +51,16 @@ class ModelName(BaseModel):
 
         self.dataset = DataLoader().load_data(self.config.data)
 
-        LOG.info(f".... validating test data")
+        LOG.info(f".... validating all data")
 
         try:
             validate = DataLoader().validate_schema(self.dataset)
             if validate is None:
                 LOG.info(f"PASS: Data validation passed.")
         except:
-            LOG.error(f"FAIL: Data validation failed. Error 100")
-            sys.exit(100)
+            LOG.error(f"FAIL: Data validation failed.")
+            raise Exception("ERROR - FAIL:(dataloader) - invalid data schema") 
+            # sys.exit(100) # exit if using log and no raise exception
 
         self.train_dataset, self.test_dataset = DataLoader().preprocess_data(self.dataset, self.test_size, self.random_state)
 
@@ -88,22 +90,57 @@ class ModelName(BaseModel):
                                 self.X_train, self.y_train, vars(self.model_params))
         trainer.train()
 
-    def evaluate(self):
+    def evaluate(self): 
 
         """Predicts results for the test dataset"""
 
         LOG.info(f'Model predictions for test dataset')
+
+        LOG.info(f".... validating test data")
         
+        ## schema checks
+        try:
+            validate = DataLoader().validate_schema(self.test_dataset)
+            if validate is None:
+                LOG.info(f"PASS: Test data validation passed.")
+        except:
+            raise Exception(f"ERROR - FAIL:(model_evaluation) - invalid input schema.")
 
+        ## input checks
+        if isinstance(self.test_dataset,dict):
+            self.test_dataset = pd.DataFrame(self.test_dataset)
+        elif isinstance(self.test_dataset,pd.DataFrame):
+            pass
+        else:
+            raise Exception(f"ERROR - FAIL:(model_evaluation) - invalid input. {self.test_dataset} was given")
 
+        ## features check
+        test_features = sorted(self.test_dataset.columns.drop(['y']).tolist())
+        data_features = sorted(self.dataset.columns.drop(['y']).tolist())
+        if test_features != data_features:
+            print(f"test features: {','.join(test_features)}")
+            raise Exception("ERROR - FAIL:(model_evaluation) - invalid features present") 
         
+        model_pickle_name = self.model_name + '_' + self.model_folder + '.' + self.model_version + '.pickle'
+        saved_model = os.path.join('models', 'saved_models', self.model_name, self.model_folder, model_pickle_name)  
 
+        LOG.info(f".... loading model {saved_model}")
+
+        if not os.path.exists(saved_model):
+            exc = (f"Model '{saved_model}' cannot be found. Did you train the full model?")
+            raise Exception(exc)
+    
+        model = pickle.load(open(saved_model, 'rb'))
+
+        ## make prediction and gather data for log entry
+        predictions = model.predict(self.X_test)
+        print(predictions)
         # predictions = []
         # for predicted in self.test_dataset:
         #     LOG.info(f'Predicting segmentation map {predicted}')
         #     predictions.append(self.model.predict(predicted))
             
-        # return predictions
+        return predictions
 
 
 # if __name__ == '__main__':
