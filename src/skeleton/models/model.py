@@ -24,7 +24,6 @@ class ModelName(BaseModel):
         super().__init__(config)
 
         self.model = None
-        # self.output_channels = self.config.model.output
         self.dataset = None
         self.info = None
         self.model = None
@@ -37,6 +36,9 @@ class ModelName(BaseModel):
         self.target = self.config.train.target_att
         self.test_size = self.config.train.test_size
         self.random_state = self.config.train.random_state
+        self.model_name = self.config.model.name
+        self.model_folder = self.config.model.folder
+        self.model_version = self.config.model.version
         self.model_params = self.config.model.params
 
     def load_data(self):
@@ -57,7 +59,7 @@ class ModelName(BaseModel):
     def build(self):
 
         """
-        Create the xgboost classifier with predefined parameters, user can overwright it by passing kw args
+        Create the xgboost classifier with predefined initial parameters, user can overwright it by passing kw args in train
         """
         init_params = vars(self.model_params) #set in config
         self.model = XGBClassifier(**init_params, use_label_encoder=False)
@@ -70,7 +72,7 @@ class ModelName(BaseModel):
 
         LOG.info('Training started')
 
-        trainer = ModelTrainer(self.model, self.X_train, self.y_train, vars(self.model_params))
+        trainer = ModelTrainer(self.model, self.model_name, self.model_folder, self.model_version, self.X_train, self.y_train, vars(self.model_params))
         trainer.train()
 
     # def evaluate(self):

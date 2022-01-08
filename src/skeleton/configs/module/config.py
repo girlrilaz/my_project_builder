@@ -17,8 +17,12 @@ CFG = {
         "metrics": ["accuracy"]
     },
     "model": {
+        "name" : "XGBoost",
+        "folder": "2",
+        "version": "0.1",
+        "short description": "XGBoost on imbalanced bank data",
         "params": {
-            "nthread":[4],
+            "nthread": [4],
             "booster": ["gbtree"], 
             "n_estimators": [20],
             "objective": ["binary:logistic"], 

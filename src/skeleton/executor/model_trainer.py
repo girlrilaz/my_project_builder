@@ -17,14 +17,17 @@ LOG = get_logger('change_to_trainer_name')
 
 class ModelTrainer:
 
-    def __init__(self, model, X_train, y_train, init_params):
+    def __init__(self, model, name, folder, version, X_train, y_train, init_params):
         self.model = model
+        self.name = name
+        self.folder = folder
+        self.version = version
         self.X_train = X_train
         self.y_train = y_train
         self.init_params = init_params
         self.train_log_dir = './logs/'
         self.model_save_path = './models/saved_models/'
-        self.checkpoint_path = './checkpoints/'
+        # self.checkpoint_path = './checkpoints/'
 
     def train(self):
 
@@ -55,7 +58,7 @@ class ModelTrainer:
             "scale_pos_weight": [1]
         } 
     
-        #grid = GridSearchCV(self.model, param_grid=self.init_params, cv=10, n_jobs=1)
+        # grid = GridSearchCV(self.model, param_grid=grid_params, cv=10, n_jobs=1)
         grid =  GridSearchCV(self.model, param_grid=grid_params, n_jobs=5, 
                    cv=StratifiedKFold(n_splits=10, random_state=0, shuffle=True), 
                    scoring='roc_auc',
@@ -70,15 +73,12 @@ class ModelTrainer:
         final_model = XGBClassifier(**best_params, use_label_encoder=False)
         final_model.fit(self.X_train,self.y_train)
 
-        print(self.model)
-        print(final_model)
-
-        # LOG.info(f"Saved checkpoint: {self.checkpoint_path}")
+         # LOG.info(f"Saved checkpoint: {self.checkpoint_path}")
 
         # save model pickel here
-        save_path = os.path.join(self.model_save_path, "modelname/1/")
+        save_path = os.path.join(self.model_save_path, self.name, self.folder)
         os.makedirs(save_path, exist_ok = True) 
-        pickle.dump(final_model, open(os.path.join(save_path, 'model.pickle'),'wb'))
+        pickle.dump(final_model, open(os.path.join(save_path, self.name + '_' + self.folder + '.' + self.version + '.pickle'),'wb'))
 
         LOG.info(f"Saved model: {save_path}")
 
