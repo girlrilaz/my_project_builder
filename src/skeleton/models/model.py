@@ -57,7 +57,8 @@ class ModelName(BaseModel):
             if validate is None:
                 LOG.info(f"PASS: Data validation passed.")
         except:
-            LOG.error(f"FAIL: Data validation failed.")
+            LOG.error(f"FAIL: Data validation failed. Error 100")
+            sys.exit(100)
 
         self.train_dataset, self.test_dataset = DataLoader().preprocess_data(self.dataset, self.test_size, self.random_state)
 
