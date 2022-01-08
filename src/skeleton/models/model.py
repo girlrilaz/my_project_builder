@@ -49,6 +49,16 @@ class ModelName(BaseModel):
         LOG.info(f'Loading {self.config.data.path} dataset...' )
 
         self.dataset = DataLoader().load_data(self.config.data)
+
+        LOG.info(f".... validating test data")
+
+        try:
+            validate = DataLoader().validate_schema(self.dataset)
+            if validate is None:
+                LOG.info(f"PASS: Data validation passed.")
+        except:
+            LOG.error(f"FAIL: Data validation failed.")
+
         self.train_dataset, self.test_dataset = DataLoader().preprocess_data(self.dataset, self.test_size, self.random_state)
 
         self.X_train= DataLoader().feature_pipeline(self.numerical, self.categorical).fit(self.train_dataset).transform(self.train_dataset)
@@ -83,20 +93,16 @@ class ModelName(BaseModel):
 
         LOG.info(f'Model predictions for test dataset')
         
-        LOG.info(f".... validating test data")
-        try:
-            validate = DataLoader().validate_schema(self.test_dataset)
-            if validate is None:
-                LOG.info(f"PASS: Test data validation passed.")
-        except:
-            LOG.error(f"FAIL: Test data validation failed.")
 
-        predictions = []
-        for predicted in self.test_dataset:
-            LOG.info(f'Predicting segmentation map {predicted}')
-            predictions.append(self.model.predict(predicted))
+
+        
+
+        # predictions = []
+        # for predicted in self.test_dataset:
+        #     LOG.info(f'Predicting segmentation map {predicted}')
+        #     predictions.append(self.model.predict(predicted))
             
-        return predictions
+        # return predictions
 
 
 # if __name__ == '__main__':

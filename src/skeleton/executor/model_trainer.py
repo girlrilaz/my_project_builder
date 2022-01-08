@@ -37,7 +37,7 @@ class ModelTrainer:
         '''
 
         LOG.info(f'Start model training ....')
-        LOG.info(f'.... grid searchingå')
+        LOG.info(f'.... grid searching')
 
         grid_params =  {
             "nthread":[4],
