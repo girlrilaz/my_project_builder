@@ -72,7 +72,8 @@ class ModelName(BaseModel):
 
         LOG.info('Training started')
 
-        trainer = ModelTrainer(self.model, self.model_name, self.model_folder, self.model_version, self.X_train, self.y_train, vars(self.model_params))
+        trainer = ModelTrainer(self.model, self.model_name, self.model_folder, self.model_version, 
+                                self.X_train, self.y_train, vars(self.model_params))
         trainer.train()
 
     # def evaluate(self):

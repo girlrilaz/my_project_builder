@@ -37,7 +37,6 @@ class ModelTrainer:
         '''
 
         LOG.info(f'Start model training ....')
-
         LOG.info(f'.... grid searchingå')
 
         grid_params =  {
@@ -60,7 +59,7 @@ class ModelTrainer:
     
         # grid = GridSearchCV(self.model, param_grid=grid_params, cv=10, n_jobs=1)
         grid =  GridSearchCV(self.model, param_grid=grid_params, n_jobs=5, 
-                   cv=StratifiedKFold(n_splits=10, random_state=0, shuffle=True), 
+                   cv=StratifiedKFold(n_splits=5, random_state=0, shuffle=True), 
                    scoring='roc_auc',
                    verbose=2, refit=True)
 
@@ -76,6 +75,8 @@ class ModelTrainer:
          # LOG.info(f"Saved checkpoint: {self.checkpoint_path}")
 
         # save model pickel here
+        LOG.info(f"... saving model: {self.name + '_' + self.folder + '.' + self.version}")
+
         save_path = os.path.join(self.model_save_path, self.name, self.folder)
         os.makedirs(save_path, exist_ok = True) 
         pickle.dump(final_model, open(os.path.join(save_path, self.name + '_' + self.folder + '.' + self.version + '.pickle'),'wb'))

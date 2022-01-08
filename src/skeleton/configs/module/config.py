@@ -18,8 +18,8 @@ CFG = {
     },
     "model": {
         "name" : "XGBoost",
-        "folder": "2",
-        "version": "0.1",
+        "folder": "1",
+        "version": "0.0",
         "short description": "XGBoost on imbalanced bank data",
         "params": {
             "nthread": [4],
