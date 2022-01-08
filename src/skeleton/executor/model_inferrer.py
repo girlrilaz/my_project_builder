@@ -8,7 +8,7 @@ from utils.config import Config
 from configs.module.config import CFG
 
 
-class UnetInferrer:S
+class UnetInferrer:
     def __init__(self):
         self.config = Config.from_json(CFG)
         self.image_size = self.config.data.image_size

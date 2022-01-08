@@ -11,14 +11,13 @@ sys.path.append('.')
 
 # external
 from xgboost import XGBClassifier
-from sklearn.metrics import accuracy_score
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import KFold, StratifiedKFold
+
 
 # internal
 from utils.logger import get_logger
 from utils.dataloader import DataLoader
 from executor.model_trainer import ModelTrainer
+from executor.model_evaluator import ModelEvaluator
 
 LOG = get_logger('xgboost')
 
@@ -66,8 +65,8 @@ class ModelName(BaseModel):
             if validate is None:
                 LOG.info("PASS: data validation passed.")
         except:
-            LOG.error("FAIL: data validation failed.")
-            raise Exception("ERROR - FAIL:(dataloader) - invalid data schema")
+            LOG.critical("FAIL: data validation failed.")
+            raise Exception("CRITICAL - FAIL:(dataloader) - invalid data schema")
             # sys.exit(100) # exit if using log and no raise exception
 
         self.train_dataset, self.test_dataset = DataLoader().preprocess_data(self.dataset, self.test_size, self.random_state)
@@ -108,61 +107,10 @@ class ModelName(BaseModel):
 
         LOG.info("..... validating test data")
 
-        ## schema checks
-        try:
-            validate = DataLoader().validate_schema(self.test_dataset)
-            if validate is None:
-                LOG.info("PASS: Test data validation passed.")
-        except:
-            raise Exception("ERROR - FAIL:(model_evaluation) - invalid input schema.")
+        ModelEvaluator().test_data_validation(self.test_dataset, self.dataset)
 
-        ## input checks
-        if isinstance(self.test_dataset,dict):
-            self.test_dataset = pd.DataFrame(self.test_dataset)
-        elif isinstance(self.test_dataset,pd.DataFrame):
-            pass
-        else:
-            raise Exception(f"ERROR - FAIL:(model_evaluation) - invalid input. {self.test_dataset} was given")
+        model = ModelEvaluator().model_load()
+        
+        predictions = ModelEvaluator().model_predict(model, self.X_test, self.y_test)
 
-        ## features check
-        test_features = sorted(self.test_dataset.columns.drop(['y']).tolist())
-        data_features = sorted(self.dataset.columns.drop(['y']).tolist())
-        if test_features != data_features:
-            print(f"test features: {','.join(test_features)}")
-            raise Exception("ERROR - FAIL:(model_evaluation) - invalid features present")
-
-        model_pickle_name = self.model_name + '_' + self.model_folder + '.' + self.model_version + '.pickle'
-        saved_model = os.path.join('models', 'saved_models', self.model_name, self.model_folder, model_pickle_name)
-
-        LOG.info(f"..... loading model {saved_model}")
-
-        if not os.path.exists(saved_model):
-            exc = (f"model '{saved_model}' cannot be found. Did you train the full model?")
-            raise Exception(exc)
-
-        model = pickle.load(open(saved_model, 'rb'))
-
-        ## make prediction and gather data for log entry
-        y_pred = model.predict(self.X_test)
-
-        LOG.info("..... starting model prediction on test data")
-
-        predictions = [round(value) for value in y_pred]
-
-        LOG.info("Model evaluation completed")
-
-        # evaluate predictions using train_test split - quicker
-        accuracy = accuracy_score(self.y_test, predictions)
-        print(f"Train-Test split accuracy: {round(accuracy * 100.0,2)} %")
-
-        # evaluate predictions using Kfold method - good for sets model has not seen
-        kfold = KFold(n_splits=10, random_state=7, shuffle = True)
-        results = cross_val_score(model, self.X_test, self.y_test, cv=kfold)
-        print(f"K-fold validation accuracy (std): {round(results.mean()*100,2)} % ({round(results.std()*100,2)} %)")
-
-        # evaluate predictions using Stratified Kfold method - good for multiple classes or imbalanced dataset
-        stratified_kfold = StratifiedKFold(n_splits=10, random_state=7, shuffle = True)
-        s_results = cross_val_score(model, self.X_test, self.y_test, cv=stratified_kfold)
-        print(f"Stratified K-fold validation accuracy (std): {round(s_results.mean()*100,2)} % ({round(s_results.std()*100,2)} %)")
-
-        return predictions
+        ModelEvaluator().evaluation_report(self,self.y_test, predictions['y_pred'], predictions['y_proba'])
