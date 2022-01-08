@@ -36,8 +36,8 @@ class ModelTrainer:
         Save pickle models into saved_models
         '''
 
-        LOG.info(f'Start model training ....')
-        LOG.info(f'.... grid searching')
+        LOG.info(f'Start model training .....')
+        LOG.info(f'..... grid searching')
 
         grid_params =  {
             "nthread":[4],
@@ -75,7 +75,7 @@ class ModelTrainer:
          # LOG.info(f"Saved checkpoint: {self.checkpoint_path}")
 
         # save model pickel here
-        LOG.info(f".... saving model: {self.name + '_' + self.folder + '.' + self.version}")
+        LOG.info(f"..... saving model: {self.name + '_' + self.folder + '.' + self.version}")
 
         save_path = os.path.join(self.model_save_path, self.name, self.folder)
         os.makedirs(save_path, exist_ok = True) 

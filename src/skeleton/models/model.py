@@ -50,11 +50,11 @@ class ModelName(BaseModel):
 
         """Loads and Preprocess data """
 
-        LOG.info(f'Loading {self.config.data.path} dataset...' )
+        LOG.info(f'Loading {self.config.data.path} dataset .....' )
 
         self.dataset = DataLoader().load_data(self.config.data)
 
-        LOG.info(f".... validating all data")
+        LOG.info(f"..... validating all data")
 
         try:
             validate = DataLoader().validate_schema(self.dataset)
@@ -99,7 +99,7 @@ class ModelName(BaseModel):
 
         LOG.info(f'Model predictions for test dataset')
 
-        LOG.info(f".... validating test data")
+        LOG.info(f"..... validating test data")
         
         ## schema checks
         try:
@@ -127,7 +127,7 @@ class ModelName(BaseModel):
         model_pickle_name = self.model_name + '_' + self.model_folder + '.' + self.model_version + '.pickle'
         saved_model = os.path.join('models', 'saved_models', self.model_name, self.model_folder, model_pickle_name)  
 
-        LOG.info(f".... loading model {saved_model}")
+        LOG.info(f"..... loading model {saved_model}")
 
         if not os.path.exists(saved_model):
             exc = (f"Model '{saved_model}' cannot be found. Did you train the full model?")
@@ -138,7 +138,11 @@ class ModelName(BaseModel):
         ## make prediction and gather data for log entry
         y_pred = model.predict(self.X_test)
 
+        LOG.info(f"..... starting model prediction on test data") 
+
         predictions = [round(value) for value in y_pred]
+
+        LOG.info(f"..... model prediction completed") 
 
         # evaluate predictions using train_test split - quicker
         accuracy = accuracy_score(self.y_test, predictions)
