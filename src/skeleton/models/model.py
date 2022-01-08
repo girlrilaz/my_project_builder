@@ -15,6 +15,9 @@ from executor.model_trainer import ModelTrainer
 
 # external
 from xgboost import XGBClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import KFold, StratifiedKFold
+from sklearn.model_selection import cross_val_score
 
 LOG = get_logger('change_to_model_name')
 
@@ -133,13 +136,24 @@ class ModelName(BaseModel):
         model = pickle.load(open(saved_model, 'rb'))
 
         ## make prediction and gather data for log entry
-        predictions = model.predict(self.X_test)
-        print(predictions)
-        # predictions = []
-        # for predicted in self.test_dataset:
-        #     LOG.info(f'Predicting segmentation map {predicted}')
-        #     predictions.append(self.model.predict(predicted))
-            
+        y_pred = model.predict(self.X_test)
+
+        predictions = [round(value) for value in y_pred]
+
+        # evaluate predictions using train_test split - quicker
+        accuracy = accuracy_score(self.y_test, predictions)
+        print("Train-Test split accuracy: %.2f%%" % (accuracy * 100.0))
+
+        # evaluate predictions using Kfold method - good for sets model has not seen
+        kfold = KFold(n_splits=10, random_state=7, shuffle = True)
+        results = cross_val_score(model, self.X_test, self.y_test, cv=kfold)
+        print("K-fold validation accuracy (std): %.2f%% (%.2f%%)" % (results.mean()*100, results.std()*100))
+
+        # evaluate predictions using Stratified Kfold method - good for multiple classes or imbalanced dataset
+        stratified_kfold = StratifiedKFold(n_splits=10, random_state=7, shuffle = True)
+        s_results = cross_val_score(model, self.X_test, self.y_test, cv=stratified_kfold)
+        print("Stratified K-fold validation accuracy (std): %.2f%% (%.2f%%)" % (s_results.mean()*100, s_results.std()*100))
+
         return predictions
 
 
