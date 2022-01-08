@@ -13,7 +13,7 @@ from utils.logger import get_logger
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
 
 
-LOG = get_logger('change_to_trainer_name')
+LOG = get_logger('xgboost_training')
 
 class ModelTrainer:
 
@@ -75,13 +75,14 @@ class ModelTrainer:
          # LOG.info(f"Saved checkpoint: {self.checkpoint_path}")
 
         # save model pickel here
-        LOG.info(f"..... saving model: {self.name + '_' + self.folder + '.' + self.version}")
+        LOG.info(f"saving model: {self.name + '_' + self.folder + '.' + self.version}")
 
         save_path = os.path.join(self.model_save_path, self.name, self.folder)
         os.makedirs(save_path, exist_ok = True) 
         pickle.dump(final_model, open(os.path.join(save_path, self.name + '_' + self.folder + '.' + self.version + '.pickle'),'wb'))
 
-        LOG.info(f"Saved model: {save_path}")
+        LOG.info(f"saved model: {save_path}")
+        LOG.info(f"Model training completed")
 
     def _write_summary(self, loss, epoch):
 

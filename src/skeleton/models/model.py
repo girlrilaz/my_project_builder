@@ -19,7 +19,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold, StratifiedKFold
 from sklearn.model_selection import cross_val_score
 
-LOG = get_logger('change_to_model_name')
+LOG = get_logger('xgboost')
 
 class ModelName(BaseModel):
 
@@ -50,7 +50,7 @@ class ModelName(BaseModel):
 
         """Loads and Preprocess data """
 
-        LOG.info(f'Loading {self.config.data.path} dataset .....' )
+        LOG.info(f'loading {self.config.data.path} dataset .....' )
 
         self.dataset = DataLoader().load_data(self.config.data)
 
@@ -59,9 +59,9 @@ class ModelName(BaseModel):
         try:
             validate = DataLoader().validate_schema(self.dataset)
             if validate is None:
-                LOG.info(f"PASS: Data validation passed.")
+                LOG.info(f"PASS: data validation passed.")
         except:
-            LOG.error(f"FAIL: Data validation failed.")
+            LOG.error(f"FAIL: data validation failed.")
             raise Exception("ERROR - FAIL:(dataloader) - invalid data schema") 
             # sys.exit(100) # exit if using log and no raise exception
 
@@ -87,8 +87,6 @@ class ModelName(BaseModel):
 
         """Compiles and trains the model with train dataset"""
 
-        LOG.info('Training started')
-
         trainer = ModelTrainer(self.model, self.model_name, self.model_folder, self.model_version, 
                                 self.X_train, self.y_train, vars(self.model_params))
         trainer.train()
@@ -97,7 +95,7 @@ class ModelName(BaseModel):
 
         """Predicts results for the test dataset"""
 
-        LOG.info(f'Model predictions for test dataset')
+        LOG.info(f'Start evaluation on test dataset .....')
 
         LOG.info(f"..... validating test data")
         
@@ -130,7 +128,7 @@ class ModelName(BaseModel):
         LOG.info(f"..... loading model {saved_model}")
 
         if not os.path.exists(saved_model):
-            exc = (f"Model '{saved_model}' cannot be found. Did you train the full model?")
+            exc = (f"model '{saved_model}' cannot be found. Did you train the full model?")
             raise Exception(exc)
     
         model = pickle.load(open(saved_model, 'rb'))
@@ -142,7 +140,7 @@ class ModelName(BaseModel):
 
         predictions = [round(value) for value in y_pred]
 
-        LOG.info(f"..... model prediction completed") 
+        LOG.info(f"Model evaluation completed") 
 
         # evaluate predictions using train_test split - quicker
         accuracy = accuracy_score(self.y_test, predictions)
