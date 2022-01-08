@@ -24,6 +24,6 @@ class BaseModel(ABC):
     def train(self):
         pass
 
-    # @abstractmethod
-    # def evaluate(self):
-    #     pass
+    @abstractmethod
+    def evaluate(self):
+        pass

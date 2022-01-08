@@ -4,6 +4,7 @@
 # standard library
 import sys
 sys.path.append('.')
+import pandas as pd
 
 # internal
 from .base_model import BaseModel
@@ -76,22 +77,26 @@ class ModelName(BaseModel):
                                 self.X_train, self.y_train, vars(self.model_params))
         trainer.train()
 
-    # def evaluate(self):
+    def evaluate(self):
 
-    #     """Predicts results for the test dataset"""
+        """Predicts results for the test dataset"""
 
-    #     predictions = []
-    #     LOG.info(f'Model predictions for test dataset')
+        LOG.info(f'Model predictions for test dataset')
+        
+        LOG.info(f".... validating test data")
+        try:
+            validate = DataLoader().validate_schema(self.test_dataset)
+            if validate is None:
+                LOG.info(f"PASS: Test data validation passed.")
+        except:
+            LOG.error(f"FAIL: Test data validation failed.")
 
-    #     for im in self.test_dataset.as_numpy_iterator():
-    #         DataLoader().validate_schema(im[0])
-    #         break
-
-    #     for predicted in self.test_dataset:
-    #         LOG.info(f'Predicting segmentation map {predicted}')
-    #         predictions.append(self.model.predict(predicted))
+        predictions = []
+        for predicted in self.test_dataset:
+            LOG.info(f'Predicting segmentation map {predicted}')
+            predictions.append(self.model.predict(predicted))
             
-    #     return predictions
+        return predictions
 
 
 # if __name__ == '__main__':

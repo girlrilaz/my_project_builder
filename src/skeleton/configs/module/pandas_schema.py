@@ -23,6 +23,6 @@ SCHEMA = DataFrameSchema (
     "poutcome": Column(str, required=True),
     "y": Column(str, required=True),
     },
-    coerce=True,  # True : allows null values in columns
+    coerce=False,  # True : allows null values in columns
     strict=False, # False : allows dataset to have extra columns 
 )

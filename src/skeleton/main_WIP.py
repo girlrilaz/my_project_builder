@@ -12,7 +12,7 @@ def run():
     model.load_data()
     model.build()
     model.train()
-    # model.evaluate()
+    model.evaluate()
 
 
 if __name__ == '__main__':
