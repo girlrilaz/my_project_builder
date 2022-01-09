@@ -75,24 +75,24 @@ class ModelTrainer:
  
         grid.fit(self.X_train, self.y_train)
 
-        # best_params = grid.best_params_
-        # best_params = {re.sub("clf__","",key):value for key,value in best_params.items()}
+        best_params = grid.best_params_
+        best_params = {re.sub("clf__","",key):value for key,value in best_params.items()}
 
-        # ## fit model on training data
-        # final_model = XGBClassifier(**best_params, use_label_encoder=False)
+        ## fit model on training data
+        final_model = XGBClassifier(**best_params, use_label_encoder=False)
         # final_model = Pipeline(steps=[('f_preprocessing', feature_pipeline), 
         #                         ('f_model', final_model)])
-        # final_model.fit(self.X_train,self.y_train)
+        final_model.fit(self.X_train,self.y_train)
 
-        #  # LOG.info(f"Saved checkpoint: {self.checkpoint_path}")
+         # LOG.info(f"Saved checkpoint: {self.checkpoint_path}")
 
-        # # save model pickel here
-        # LOG.info(f"saving model: {self.name + '_' + self.folder + '.' + self.version}")
+        # save model pickel here
+        LOG.info(f"saving model: {self.name + '_' + self.folder + '.' + self.version}")
 
-        # save_path = os.path.join(self.model_save_path, self.name, self.folder)
-        # os.makedirs(save_path, exist_ok = True)
-        # pickle.dump(final_model, open(os.path.join(save_path, self.name + '_' + \
-        #     self.folder + '.' + self.version + '.pickle'),'wb'))
+        save_path = os.path.join(self.model_save_path, self.name, self.folder)
+        os.makedirs(save_path, exist_ok = True)
+        pickle.dump(final_model, open(os.path.join(save_path, self.name + '_' + \
+            self.folder + '.' + self.version + '.pickle'),'wb'))
 
-        # LOG.info(f"saved model: {save_path}")
-        # LOG.info("Model training completed")
+        LOG.info(f"saved model: {save_path}")
+        LOG.info("Model training completed")
