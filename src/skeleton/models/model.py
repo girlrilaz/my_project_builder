@@ -2,16 +2,13 @@
 """XGboost model"""
 
 # standard library
-import os
 import sys
 from .base_model import BaseModel
-import pickle
 import pandas as pd
 sys.path.append('.')
 
 # external
 from xgboost import XGBClassifier
-
 
 # internal
 from utils.logger import get_logger
