@@ -35,13 +35,19 @@ class DataLoader:
         #jsonschema.validate({'data':data_point.tolist()},SCHEMA)
 
     @staticmethod
+    def split_feature_target(data_point, y_attribute):
+        """Split features (X) and target (Y)"""
+        X = data_point.drop(y_attribute, axis = 1)
+        y = data_point[y_attribute]
+        return X, y
+
+    @staticmethod
     def preprocess_data(dataset, test_size, random_state):
         """ Preprocess and splits into training and test"""
         return train_test_split(dataset, test_size=test_size, random_state=random_state)
 
-
     @staticmethod
-    def feature_pipeline(numerical_features, categorical_features):
+    def feature_pipeline(numerical_features, categorical_features): #numerical_features, categorical_features
         """Loads and preprocess a datapoint with pipeline"""
 
         ## preprocessing pipeline

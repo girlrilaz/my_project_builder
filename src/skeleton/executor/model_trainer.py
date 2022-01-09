@@ -9,16 +9,18 @@ import pickle
 #external
 from xgboost.sklearn import XGBClassifier
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
+from sklearn.pipeline import Pipeline
 
 #internal
 from utils.logger import get_logger
+from utils.dataloader import DataLoader
 
 LOG = get_logger('xgboost_training')
 
 class ModelTrainer:
     """Model training executor class"""
 
-    def __init__(self, model, name, folder, version, X_train, y_train, init_params):
+    def __init__(self, model, name, folder, version, X_train, y_train, init_params, numerical_att, categorical_att, target_att):
         self.model = model
         self.name = name
         self.folder = folder
@@ -26,6 +28,9 @@ class ModelTrainer:
         self.X_train = X_train
         self.y_train = y_train
         self.init_params = init_params
+        self.numerical_att = numerical_att
+        self.categorical_att = categorical_att
+        self.target_att = target_att
         self.train_log_dir = './logs/'
         self.model_save_path = './models/saved_models/'
         # self.checkpoint_path = './checkpoints/'
@@ -38,11 +43,11 @@ class ModelTrainer:
         '''
 
         LOG.info('Start model training .....')
+
         LOG.info('..... grid searching')
 
         grid_params =  {
             "nthread":[4],
-            "booster": ["gbtree"],
             "n_estimators": [20, 40],
             "objective": ["binary:logistic"],
             "learning_rate" : [0.25, 0.5],
@@ -53,35 +58,41 @@ class ModelTrainer:
             "min_child_weight": [4],
             "max_delta_step": [0],
             "subsample": [1],
-            "colsample_bytree": [1],
             "seed": [0],
             "scale_pos_weight": [1]
         }
 
-        # grid = GridSearchCV(self.model, param_grid=grid_params, cv=10, n_jobs=1)
+        # feature_pipeline = DataLoader().feature_pipeline(self.numerical_att, self.categorical_att)  
+        # target_pipeline = DataLoader().target_pipeline(self.target_att)
+        # init_model = self.model
+        # init_model_pipeline = Pipeline(steps=[('cat', feature_pipeline), 
+        #                                       ('clf', init_model)])
+
         grid =  GridSearchCV(self.model, param_grid=grid_params, n_jobs=5,
                    cv=StratifiedKFold(n_splits=5, random_state=0, shuffle=True),
                    scoring='roc_auc',
                    verbose=2, refit=True)
-
+ 
         grid.fit(self.X_train, self.y_train)
 
-        best_params = grid.best_params_
-        best_params = {re.sub("clf__","",key):value for key,value in best_params.items()}
+        # best_params = grid.best_params_
+        # best_params = {re.sub("clf__","",key):value for key,value in best_params.items()}
 
-        ## fit model on training data
-        final_model = XGBClassifier(**best_params, use_label_encoder=False)
-        final_model.fit(self.X_train,self.y_train)
+        # ## fit model on training data
+        # final_model = XGBClassifier(**best_params, use_label_encoder=False)
+        # final_model = Pipeline(steps=[('f_preprocessing', feature_pipeline), 
+        #                         ('f_model', final_model)])
+        # final_model.fit(self.X_train,self.y_train)
 
-         # LOG.info(f"Saved checkpoint: {self.checkpoint_path}")
+        #  # LOG.info(f"Saved checkpoint: {self.checkpoint_path}")
 
-        # save model pickel here
-        LOG.info(f"saving model: {self.name + '_' + self.folder + '.' + self.version}")
+        # # save model pickel here
+        # LOG.info(f"saving model: {self.name + '_' + self.folder + '.' + self.version}")
 
-        save_path = os.path.join(self.model_save_path, self.name, self.folder)
-        os.makedirs(save_path, exist_ok = True)
-        pickle.dump(final_model, open(os.path.join(save_path, self.name + '_' + \
-            self.folder + '.' + self.version + '.pickle'),'wb'))
+        # save_path = os.path.join(self.model_save_path, self.name, self.folder)
+        # os.makedirs(save_path, exist_ok = True)
+        # pickle.dump(final_model, open(os.path.join(save_path, self.name + '_' + \
+        #     self.folder + '.' + self.version + '.pickle'),'wb'))
 
-        LOG.info(f"saved model: {save_path}")
-        LOG.info("Model training completed")
+        # LOG.info(f"saved model: {save_path}")
+        # LOG.info("Model training completed")

@@ -36,6 +36,8 @@ class ModelName(BaseModel):
         self.y_train = None
         self.X_test = None
         self.y_test = None
+        # self.X = []
+        # self.y = []
         self.train_dataset = []
         self.test_dataset = []
         self.numerical = self.config.data.numerical_att
@@ -67,6 +69,9 @@ class ModelName(BaseModel):
             raise Exception("CRITICAL - FAIL:(dataloader) - invalid data schema")
             # sys.exit(100) # exit if using log and no raise exception
 
+        # self.X, self.y = DataLoader().split_feature_target(self.dataset, self.target)
+        # self.X_train, self.X_test, self.y_train ,self.y_test = DataLoader().preprocess_data(self.X, self.y, self.test_size, self.random_state)
+
         self.train_dataset, self.test_dataset = DataLoader().preprocess_data(self.dataset, self.test_size, self.random_state)
 
         self.X_train= DataLoader().feature_pipeline(self.numerical, self.categorical) \
@@ -94,7 +99,8 @@ class ModelName(BaseModel):
         """Compiles and trains the model with train dataset"""
 
         trainer = ModelTrainer(self.init_model, self.model_name, self.model_folder, self.model_version,
-                                self.X_train, self.y_train, vars(self.model_params))
+                                self.X_train, self.y_train, vars(self.model_params),
+                                self.numerical, self.categorical, self.target)
         trainer.train()
 
     def evaluate(self):

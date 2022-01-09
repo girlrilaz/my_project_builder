@@ -23,7 +23,6 @@ CFG = {
         "short description": "XGBoost on imbalanced bank data",
         "params": {
             "nthread": [4],
-            "booster": ["gbtree"], 
             "n_estimators": [20],
             "objective": ["binary:logistic"], 
             "learning_rate" : [0.5],
@@ -34,7 +33,6 @@ CFG = {
             "min_child_weight": [5], 
             "max_delta_step": [0], 
             "subsample": [1], 
-            "colsample_bytree": [1], 
             "seed": [0], 
             "scale_pos_weight": [1]}
     }
