@@ -29,6 +29,7 @@ class ModelName(BaseModel):
         super().__init__(config)
 
         self.model = None
+        self.init_model = None
         self.dataset = None
         self.info = None
         self.model = None
@@ -87,7 +88,7 @@ class ModelName(BaseModel):
         Create the xgboost classifier with predefined initial parameters, user can overwright it by passing kw args in train
         """
         init_params = vars(self.model_params) #set in config
-        self.model = XGBClassifier(**init_params, use_label_encoder=False)
+        self.init_model = XGBClassifier(**init_params, use_label_encoder=False)
 
         LOG.info('Model was built successfully')
 
@@ -95,7 +96,7 @@ class ModelName(BaseModel):
 
         """Compiles and trains the model with train dataset"""
 
-        trainer = ModelTrainer(self.model, self.model_name, self.model_folder, self.model_version,
+        trainer = ModelTrainer(self.init_model, self.model_name, self.model_folder, self.model_version,
                                 self.X_train, self.y_train, vars(self.model_params))
         trainer.train()
 
@@ -107,10 +108,11 @@ class ModelName(BaseModel):
 
         LOG.info("..... validating test data")
 
-        ModelEvaluator().test_data_validation(self.test_dataset, self.dataset)
+        eval = ModelEvaluator(self.test_dataset, self.dataset, self.X_test, self.y_test)
 
-        model = ModelEvaluator().model_load()
-        
-        predictions = ModelEvaluator().model_predict(model, self.X_test, self.y_test)
+        eval.test_data_validation()
+        model = eval.model_load()
+        predictions = eval.model_predict(model)
+        eval.evaluation_report(model)
 
-        ModelEvaluator().evaluation_report(self,self.y_test, predictions['y_pred'], predictions['y_proba'])
+        return predictions

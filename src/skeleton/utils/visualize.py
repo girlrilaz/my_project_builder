@@ -1,19 +1,20 @@
 """Visual plot functions"""
-
+import os
 import matplotlib.pyplot as plt
-plt.rc("font", size=14)
+# plt.rc("font", size=14)
 
 import seaborn as sns
-sns.set() # set the seaborn stylesheet
-#sns.set(style="white")
-#sns.set(style="whitegrid")
+# sns.set() # set the seaborn stylesheet
+# #sns.set(style="white")
+# #sns.set(style="whitegrid")
 
 from sklearn.metrics import roc_curve
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import precision_recall_curve
 
+
 #plot the confusion matrix
-def plot_cm(y_test_act, y_test_pred, title="Confusion Matrix", cmap="Blues"):
+def plot_cm(y_test_act, y_test_pred, save_path, title="Confusion Matrix", cmap="Blues"):
     """
     plot the confusion matrix given the test label and predicted label.
     
@@ -30,13 +31,14 @@ def plot_cm(y_test_act, y_test_pred, title="Confusion Matrix", cmap="Blues"):
     tn = cm[0,0]
     fp = cm[0,1]
     fn = cm[1,0]
-    sns.heatmap(cm, annot=True, fmt="d", linewidths=.5, cmap = cmap, ax = ax)
+    sns.heatmap(cm, annot=True, fmt="d", linewidths=.5, ax = ax)
     ax.set_title(title)
     ax.set_xlabel("Predicted class")
     ax.set_ylabel("Actual class")
-    plt.show()
+    #plt.show()
+    plt.savefig(os.path.join(save_path, 'confusion_matrix.png'))
 
-def plot_pr_roc(y_act, y_score, label = "", color='b', show=False, tag=""):
+def plot_pr_roc(y_act, y_score, save_path, label = "", color='b', show=False, tag=""):
     """
     plot both precision recall and ROC curve 
     arguements:
@@ -51,14 +53,14 @@ def plot_pr_roc(y_act, y_score, label = "", color='b', show=False, tag=""):
     ax1.set_ylim([-0.025,1.025])
     ax1.set_xlabel('Recall')
     ax1.set_ylabel('Precision')
-    ax1.set_title('PR Curve ' + tag)
+    ax1.set_title('PR Curve - ' + tag)
 
     ax2 = fig.add_subplot(1,2,2)
     ax2.set_xlim([-0.025,1.025])
     ax2.set_ylim([-0.025,1.025])
     ax2.set_xlabel('False Positive Rate (FPR)')
     ax2.set_ylabel('True Positive Rate (TPR)')
-    ax2.set_title('ROC Curve ' + tag)
+    ax2.set_title('ROC Curve - ' + tag)
 
     pr,rc,_ = precision_recall_curve(y_act, y_score)
     tpr,fpr,_ = roc_curve(y_act, y_score)
@@ -72,9 +74,10 @@ def plot_pr_roc(y_act, y_score, label = "", color='b', show=False, tag=""):
     
     if show:
         plt.show()
+    plt.savefig(os.path.join(save_path, 'ROC_curve.png'))
 
 
-def plot_pr_vs_th(y_act, y_score, show=True, tag=""):
+def plot_pr_vs_th(y_act, y_score, save_path, show=False, tag=""):
     """
     plot precision and recall vs threshold on same plot
     
@@ -100,21 +103,4 @@ def plot_pr_vs_th(y_act, y_score, show=True, tag=""):
     
     if show:
         plt.show()
-
-
-
-
-
-
-
-# def display(display_list):
-#     plt.figure(figsize=(15, 15))
-
-#     title = ['Input Image', 'Predicted Mask']
-
-#     for i in range(len(display_list)):
-#         plt.subplot(1, len(display_list), i + 1)
-#         plt.title(title[i])
-#         plt.imshow(tf.keras.preprocessing.image.array_to_img(display_list[i]))
-#         plt.axis('off')
-#     plt.show()
+    # plt.savefig(os.path.join(save_path, 'Prec_Recall_vs_Threshold_curve.png'))
