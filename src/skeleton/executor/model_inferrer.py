@@ -1,6 +1,7 @@
 
 import pickle
 import pandas as pd
+import numpy as np
 import sys
 sys.path.append('.')
 
@@ -30,17 +31,30 @@ class ModelInferrer:
         else:
             raise Exception(f"ERROR - FAIL:(model_evaluation) - invalid input. {type(query)} was given")
 
-        query_df = DataLoader().feature_pipeline(self.numerical, self.categorical).fit(query).transform(query)
+        X = query.drop(['y'], axis=1)
+        y = query[['y']]
+        query_train = DataLoader().feature_pipeline(self.numerical, self.categorical).fit(X).transform(X) # get from model trainer log
+   
+        for n_samples in range(10, len(X), 20):
 
-        return query_df
+            subset_indices = X.sample(n=n_samples, replace=True)
+            subset_query = DataLoader().feature_pipeline(self.numerical, self.categorical).fit(subset_indices).transform(subset_indices)
+            if subset_query.shape[1] != query_train.shape[1]:
+                continue
+            else:
+                    break
+
+        print(f'n_ : {n_samples}')
+        print(f'y_ : {subset_query.shape[1]}')
+
+        return subset_query, subset_indices, y
 
     def infer(self, query):
   
-        query = self.preprocess(query)
-
-        pred = self.model.predict(query)
-        pred = pred.tolist()
-        return {'prediction_output':pred}
+        subset_query, subset_indices, y = self.preprocess(query)
+        pred = self.model.predict(subset_query)
+        # pred = pred.tolist()
+        return {'variable_input': subset_indices, 'actual_class': y, 'prediction_output':pred}
 
 
 if __name__ == '__main__':
@@ -64,6 +78,5 @@ if __name__ == '__main__':
     # }
 
     df = pd.read_csv("./data/raw/bank.csv", delimiter=';')
-    query = df.drop(['y'], axis=1)
 
-    print(ModelInferrer().infer(query))
+    print(ModelInferrer().infer(df))
