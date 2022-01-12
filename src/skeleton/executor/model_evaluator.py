@@ -3,6 +3,7 @@
 
 # standard library
 import os
+import time
 import pickle
 import pandas as pd
 
@@ -11,6 +12,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold, StratifiedKFold
+from sklearn.metrics import roc_auc_score
 
 # internal
 # from utils.visualize_WIP import display
@@ -19,6 +21,7 @@ from configs.module.config import CFG
 from utils.dataloader import DataLoader
 from utils.logger import get_logger
 from utils.visualize import plot_cm, plot_pr_roc, plot_pr_vs_th
+from utils.logger import update_evaluation_log
 
 LOG = get_logger('xgboost_evaluator')
 
@@ -91,6 +94,9 @@ class ModelEvaluator:
 
     def evaluation_report(self, model):  #, y_proba, title="", cmap="Blues"
 
+        ## start timer for runtime
+        time_start = time.time()
+
         model_name_version = self.model_name + '_' + self.model_folder + '.' + self.model_version
         os.makedirs(self.report_path, exist_ok = True)
 
@@ -99,6 +105,7 @@ class ModelEvaluator:
         ## GENERATE METRIC REPORTS
         # evaluate predictions using train_test split - quicker
         accuracy = accuracy_score(self.y_test, self.predictions['y_pred'])
+        simple_acc = round(accuracy * 100.0,2)
         acc_1 = f"\n Train-Test split accuracy: {round(accuracy * 100.0,2)} %"
         print(acc_1)
 
@@ -118,6 +125,11 @@ class ModelEvaluator:
         print("\n Classification Report - ", model_name_version, "\n\n")
         print(classification_report(self.y_test, self.predictions['y_pred']))
 
+        # evaluate predictions using confusion matrix roc_auc_score
+        roc_score = roc_auc_score(self.y_test, self.predictions['y_proba'][:, 1])
+        roc_auc = round(roc_score,2)
+        print(f"\n Receiver Operating Characteristics (ROC) Score : {roc_auc} \n\n")
+
         # ## GENERATE PLOTS
         os.makedirs(self.plots_path, exist_ok = True)
         plot_pr_roc(self.y_test, self.predictions['y_proba'][:,1], self.plots_path, "", "darkorange", False, model_name_version)
@@ -126,4 +138,10 @@ class ModelEvaluator:
         LOG.info("Model evaluation completed")
         LOG.info(f"Evaluation reports saved in : {self.report_path}")
         LOG.info(f"Evaluation plots saved in : {self.plots_path}")
- 
+
+        m, s = divmod(time.time()-time_start, 60)
+        h, m = divmod(m, 60)
+        runtime = "%03d:%02d:%02d"%(h, m, s)
+
+        ## update the log file
+        update_evaluation_log(simple_acc, roc_auc, runtime, self.model_version)

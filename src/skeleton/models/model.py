@@ -48,6 +48,7 @@ class ModelName(BaseModel):
         self.model_name = self.config.model.name
         self.model_folder = self.config.model.folder
         self.model_version = self.config.model.version
+        self.desc = self.config.model.short_description
         self.model_params = self.config.model.params
 
     def load_data(self):
@@ -98,9 +99,9 @@ class ModelName(BaseModel):
 
         """Compiles and trains the model with train dataset"""
 
-        trainer = ModelTrainer(self.init_model, self.model_name, self.model_folder, self.model_version,
-                                self.X_train, self.y_train, vars(self.model_params),
-                                self.numerical, self.categorical, self.target)
+        trainer = ModelTrainer(self.init_model, self.model_name, self.model_folder, self.model_version, 
+                               self.desc, self.X_train, self.y_train, vars(self.model_params),
+                               self.numerical, self.categorical, self.target)
         trainer.train()
 
     def evaluate(self):

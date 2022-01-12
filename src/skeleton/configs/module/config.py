@@ -20,7 +20,7 @@ CFG = {
         "name" : "XGBoost",
         "folder": "1",
         "version": "0.0",
-        "short description": "XGBoost on imbalanced bank data",
+        "short_description": "XGBoost on imbalanced bank data",
         "params": {
             "nthread": [4],
             "n_estimators": [20],

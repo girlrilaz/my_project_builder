@@ -4,6 +4,7 @@
 # standard library
 import os
 import re
+import time
 import pickle
 
 #external
@@ -12,19 +13,20 @@ from sklearn.model_selection import GridSearchCV, StratifiedKFold
 from sklearn.pipeline import Pipeline
 
 #internal
-from utils.logger import get_logger
-from utils.dataloader import DataLoader
+from utils.logger import get_logger, update_train_log
+# from utils.dataloader import DataLoader
 
 LOG = get_logger('xgboost_training')
 
 class ModelTrainer:
     """Model training executor class"""
 
-    def __init__(self, model, name, folder, version, X_train, y_train, init_params, numerical_att, categorical_att, target_att):
+    def __init__(self, model, name, folder, version, desc, X_train, y_train, init_params, numerical_att, categorical_att, target_att):
         self.model = model
         self.name = name
         self.folder = folder
         self.version = version
+        self.desc = desc
         self.X_train = X_train
         self.y_train = y_train
         self.init_params = init_params
@@ -41,6 +43,9 @@ class ModelTrainer:
         Model Fitting and Training
         Save pickle models into saved_models
         '''
+
+        ## start timer for runtime
+        time_start = time.time()
 
         LOG.info('Start model training .....')
 
@@ -96,3 +101,10 @@ class ModelTrainer:
 
         LOG.info(f"saved model: {save_path}")
         LOG.info("Model training completed")
+
+        m, s = divmod(time.time()-time_start, 60)
+        h, m = divmod(m, 60)
+        runtime = "%03d:%02d:%02d"%(h, m, s)
+
+        ## update the log file
+        update_train_log(self.X_train.shape, runtime, self.version, self.desc)
