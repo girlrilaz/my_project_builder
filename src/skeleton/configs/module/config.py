@@ -7,6 +7,7 @@ CFG = {
         "type" : "csv",
         "path": "data/raw/bank.csv",
         "bucket": "",
+        "subset_n_frac" : 0.2,
         "numerical_att": ["age", "balance", "day", "duration", "campaign", "pdays", "previous"],
         "categorical_att" : ["job", "marital", "education", "default", "housing", "loan", "contact", "month", "poutcome"]
     },

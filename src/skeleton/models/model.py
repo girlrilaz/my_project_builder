@@ -5,6 +5,7 @@
 import sys
 from .base_model import BaseModel
 import pandas as pd
+import numpy as np
 sys.path.append('.')
 
 # external
@@ -42,6 +43,7 @@ class ModelName(BaseModel):
         self.test_dataset = []
         self.numerical = self.config.data.numerical_att
         self.categorical = self.config.data.categorical_att
+        self.subset_n_frac = self.config.data.subset_n_frac
         self.target = self.config.train.target_att
         self.test_size = self.config.train.test_size
         self.random_state = self.config.train.random_state
@@ -51,7 +53,7 @@ class ModelName(BaseModel):
         self.desc = self.config.model.short_description
         self.model_params = self.config.model.params
 
-    def load_data(self):
+    def load_data(self, subset=False):
 
         """Loads and Preprocess data """
 
@@ -75,6 +77,17 @@ class ModelName(BaseModel):
 
         self.train_dataset, self.test_dataset = DataLoader().preprocess_data(self.dataset, self.test_size, self.random_state)
 
+        train_shape = DataLoader().feature_pipeline(self.numerical, self.categorical) \
+            .fit(self.train_dataset).transform(self.train_dataset)
+
+        ## subset the data to enable faster unittests
+        if subset:
+            subset_query = np.empty(shape=(1,1), dtype=object)
+            while subset_query.shape[1] != train_shape.shape[1]:
+                subset_indices = self.train_dataset.sample(frac=self.subset_n_frac, replace=True)
+                subset_query = DataLoader().feature_pipeline(self.numerical, self.categorical).fit(subset_indices).transform(subset_indices)
+                self.train_dataset = subset_indices
+    
         self.X_train= DataLoader().feature_pipeline(self.numerical, self.categorical) \
             .fit(self.train_dataset).transform(self.train_dataset)
         self.y_train = DataLoader().target_pipeline(self.target).fit(self.train_dataset[self.target]) \
@@ -95,13 +108,13 @@ class ModelName(BaseModel):
 
         LOG.info('Model was built successfully')
 
-    def train(self):
+    def train(self, subset=False):
 
         """Compiles and trains the model with train dataset"""
 
         trainer = ModelTrainer(self.init_model, self.model_name, self.model_folder, self.model_version, 
                                self.desc, self.X_train, self.y_train, vars(self.model_params),
-                               self.numerical, self.categorical, self.target)
+                               self.numerical, self.categorical, self.target, subset=subset)
         trainer.train()
 
     def evaluate(self):

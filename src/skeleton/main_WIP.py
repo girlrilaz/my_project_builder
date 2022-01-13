@@ -9,7 +9,7 @@ from models.model import ModelName
 def run():
     """Builds model, loads data, trains and evaluates"""
     model = ModelName(CFG)
-    model.load_data()
+    model.load_data(subset=False)
     model.build()
     model.train()
     model.evaluate()

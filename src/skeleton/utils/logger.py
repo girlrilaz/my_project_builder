@@ -22,7 +22,7 @@ def get_logger(name: str):
     logger = logging.getLogger(name)
     return logger
 
-def update_train_log(data_shape, runtime, model_version, model_version_note):
+def update_train_log(data_shape, runtime, model_version, model_version_note, subset=False):
     """
     update train log file
     """
@@ -31,7 +31,10 @@ def update_train_log(data_shape, runtime, model_version, model_version_note):
     today = date.today()
     day_folder = f"{today.year}-{today.month}-{today.day}"
 
-    logfile = os.path.join("logs", day_folder,f"model-train-{today.year}-{today.month}-{today.day}.log")
+    if subset:
+        logfile = os.path.join("logs", day_folder, "model-train-subset.log")
+    else:
+        logfile = os.path.join("logs", day_folder,f"model-train-{today.year}-{today.month}-{today.day}.log")
         
     ## write the data to a csv file    
     header = ['unique_id','timestamp','x_shape','model_version',

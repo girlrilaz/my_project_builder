@@ -21,7 +21,7 @@ LOG = get_logger('xgboost_training')
 class ModelTrainer:
     """Model training executor class"""
 
-    def __init__(self, model, name, folder, version, desc, X_train, y_train, init_params, numerical_att, categorical_att, target_att):
+    def __init__(self, model, name, folder, version, desc, X_train, y_train, init_params, numerical_att, categorical_att, target_att, subset):
         self.model = model
         self.name = name
         self.folder = folder
@@ -33,6 +33,7 @@ class ModelTrainer:
         self.numerical_att = numerical_att
         self.categorical_att = categorical_att
         self.target_att = target_att
+        self.subset = subset
         self.train_log_dir = './logs/'
         self.model_save_path = './models/saved_models/'
         # self.checkpoint_path = './checkpoints/'
@@ -42,6 +43,10 @@ class ModelTrainer:
         '''
         Model Fitting and Training
         Save pickle models into saved_models
+
+        The 'test' flag when set to 'True':
+        (1) subsets the data and serializes a test version
+        (2) specifies that the use of the 'test' log file
         '''
 
         ## start timer for runtime
@@ -107,4 +112,4 @@ class ModelTrainer:
         runtime = "%03d:%02d:%02d"%(h, m, s)
 
         ## update the log file
-        update_train_log(self.X_train.shape, runtime, self.version, self.desc)
+        update_train_log(self.X_train.shape, runtime, self.version, self.desc, subset=self.subset)
