@@ -52,6 +52,7 @@ class ModelName(BaseModel):
         self.model_version = self.config.model.version
         self.desc = self.config.model.short_description
         self.model_params = self.config.model.params
+        self.grid_params = self.config.model.grid_params
 
     def load_data(self, subset=False):
 
@@ -114,7 +115,7 @@ class ModelName(BaseModel):
 
         trainer = ModelTrainer(self.init_model, self.model_name, self.model_folder, self.model_version, 
                                self.desc, self.X_train, self.y_train, vars(self.model_params),
-                               self.numerical, self.categorical, self.target, subset=subset)
+                               self.numerical, self.categorical, self.target, self.grid_params, subset=subset)
         trainer.train()
 
     def evaluate(self, subset=False):

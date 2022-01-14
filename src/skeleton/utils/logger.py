@@ -22,7 +22,7 @@ def get_logger(name: str):
     logger = logging.getLogger(name)
     return logger
 
-def update_train_log(data_shape, runtime, model_version, model_version_note, subset=False):
+def update_train_log(data_shape, runtime, model_version, model_version_note, best_params, subset=False):
     """
     update train log file
     """
@@ -38,7 +38,7 @@ def update_train_log(data_shape, runtime, model_version, model_version_note, sub
         
     ## write the data to a csv file    
     header = ['unique_id','timestamp','x_shape','model_version',
-              'model_version_note','runtime']
+              'model_version_note','runtime', 'model_params']
     write_header = False
     if not os.path.exists(logfile):
         write_header = True
@@ -48,7 +48,7 @@ def update_train_log(data_shape, runtime, model_version, model_version_note, sub
             writer.writerow(header)
 
         to_write = map(str,[uuid.uuid4(),time.time(),data_shape,
-                            model_version,model_version_note,runtime])
+                            model_version,model_version_note,runtime, best_params])
         writer.writerow(to_write)
 
 def update_evaluation_log(accuracy, roc_auc,runtime,model_version, subset=False):
@@ -77,7 +77,6 @@ def update_evaluation_log(accuracy, roc_auc,runtime,model_version, subset=False)
         to_write = map(str,[uuid.uuid4(),time.time(),accuracy, roc_auc,
                             model_version,runtime])
         writer.writerow(to_write)
-
 
 # if __name__ == "__main__":
 

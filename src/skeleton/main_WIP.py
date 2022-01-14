@@ -13,13 +13,9 @@ def run():
     """Builds model, loads data, trains and evaluates"""
 
     if sys.argv[1] == "subset": 
-        print(sys.argv[1])
         subset = True
     else:
-        print(sys.argv[1])
         subset = False
-    
-    print(subset)
 
     model = ModelName(CFG)
     model.load_data(subset=subset)

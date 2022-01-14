@@ -7,7 +7,7 @@ CFG = {
         "type" : "csv",
         "path": "data/raw/bank.csv",
         "bucket": "",
-        "subset_n_frac" : 0.2,
+        "subset_n_frac" : 0.5,
         "numerical_att": ["age", "balance", "day", "duration", "campaign", "pdays", "previous"],
         "categorical_att" : ["job", "marital", "education", "default", "housing", "loan", "contact", "month", "poutcome"]
     },
@@ -35,7 +35,22 @@ CFG = {
             "max_delta_step": [0], 
             "subsample": [1], 
             "seed": [0], 
-            "scale_pos_weight": [1]}
+            "scale_pos_weight": [1]},
+        "grid_params": {
+            "nthread":[4],
+            "n_estimators": [20, 40],
+            "objective": ["binary:logistic"],
+            "learning_rate" : [0.25, 0.5],
+            "eval_metric": ["error"],
+            "eta": [0.3],
+            "gamma": [0],
+            "max_depth": [6],
+            "min_child_weight": [4],
+            "max_delta_step": [0],
+            "subsample": [1],
+            "seed": [0],
+            "scale_pos_weight": [1]
+        }
     }
 }
 

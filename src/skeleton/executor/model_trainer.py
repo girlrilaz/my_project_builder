@@ -4,7 +4,9 @@
 # standard library
 import os
 import re
+import ast
 import time
+import json
 import pickle
 
 #external
@@ -21,7 +23,8 @@ LOG = get_logger('xgboost_training')
 class ModelTrainer:
     """Model training executor class"""
 
-    def __init__(self, model, name, folder, version, desc, X_train, y_train, init_params, numerical_att, categorical_att, target_att, subset):
+    def __init__(self, model, name, folder, version, desc, X_train, y_train, init_params, 
+                    numerical_att, categorical_att, target_att, grid_params, subset):
         self.model = model
         self.name = name
         self.folder = folder
@@ -33,6 +36,7 @@ class ModelTrainer:
         self.numerical_att = numerical_att
         self.categorical_att = categorical_att
         self.target_att = target_att
+        self.grid_params = grid_params
         self.subset = subset
         self.train_log_dir = './logs/'
         self.model_save_path = './models/saved_models/'
@@ -56,21 +60,21 @@ class ModelTrainer:
 
         LOG.info('..... grid searching')
 
-        grid_params =  {
-            "nthread":[4],
-            "n_estimators": [20, 40],
-            "objective": ["binary:logistic"],
-            "learning_rate" : [0.25, 0.5],
-            "eval_metric": ["error"],
-            "eta": [0.3],
-            "gamma": [0],
-            "max_depth": [6],
-            "min_child_weight": [4],
-            "max_delta_step": [0],
-            "subsample": [1],
-            "seed": [0],
-            "scale_pos_weight": [1]
-        }
+        # grid_params =  {
+        #     "nthread":[4],
+        #     "n_estimators": [20, 40],
+        #     "objective": ["binary:logistic"],
+        #     "learning_rate" : [0.25, 0.5],
+        #     "eval_metric": ["error"],
+        #     "eta": [0.3],
+        #     "gamma": [0],
+        #     "max_depth": [6],
+        #     "min_child_weight": [4],
+        #     "max_delta_step": [0],
+        #     "subsample": [1],
+        #     "seed": [0],
+        #     "scale_pos_weight": [1]
+        # }
 
         # feature_pipeline = DataLoader().feature_pipeline(self.numerical_att, self.categorical_att)  
         # target_pipeline = DataLoader().target_pipeline(self.target_att)
@@ -78,7 +82,7 @@ class ModelTrainer:
         # init_model_pipeline = Pipeline(steps=[('cat', feature_pipeline), 
         #                                       ('clf', init_model)])
 
-        grid =  GridSearchCV(self.model, param_grid=grid_params, n_jobs=5,
+        grid =  GridSearchCV(self.model, param_grid=vars(self.grid_params), n_jobs=5,
                    cv=StratifiedKFold(n_splits=5, random_state=0, shuffle=True),
                    scoring='roc_auc',
                    verbose=2, refit=True)
@@ -121,4 +125,5 @@ class ModelTrainer:
         runtime = "%03d:%02d:%02d"%(h, m, s)
 
         ## update the log file
-        update_train_log(self.X_train.shape, runtime, self.version, self.desc, subset=self.subset)
+        update_train_log(self.X_train.shape, runtime, self.folder + '.' + self.version, 
+                            self.desc, best_params, subset=self.subset)

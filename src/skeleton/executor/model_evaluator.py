@@ -150,4 +150,4 @@ class ModelEvaluator:
         runtime = "%03d:%02d:%02d"%(h, m, s)
 
         ## update the log file
-        update_evaluation_log(simple_acc, roc_auc, runtime, self.model_version, self.subset)
+        update_evaluation_log(simple_acc, roc_auc, runtime, self.model_folder + '.' + self.model_version, self.subset)
