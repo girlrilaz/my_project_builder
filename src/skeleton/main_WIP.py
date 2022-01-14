@@ -25,7 +25,7 @@ def run():
     model.load_data(subset=subset)
     model.build()
     model.train(subset=subset)
-    model.evaluate()
+    model.evaluate(subset=subset)
 
 
 if __name__ == '__main__':

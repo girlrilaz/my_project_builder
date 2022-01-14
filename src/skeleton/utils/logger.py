@@ -32,7 +32,7 @@ def update_train_log(data_shape, runtime, model_version, model_version_note, sub
     day_folder = f"{today.year}-{today.month}-{today.day}"
 
     if subset:
-        logfile = os.path.join("logs", day_folder, f"model-train-subset-{today.year}-{today.month}-{today.day}.log")
+        logfile = os.path.join("logs", day_folder, f"model-train-subset.log")
     else:
         logfile = os.path.join("logs", day_folder,f"model-train-{today.year}-{today.month}-{today.day}.log")
         
@@ -51,7 +51,7 @@ def update_train_log(data_shape, runtime, model_version, model_version_note, sub
                             model_version,model_version_note,runtime])
         writer.writerow(to_write)
 
-def update_evaluation_log(accuracy, roc_auc,runtime,model_version):
+def update_evaluation_log(accuracy, roc_auc,runtime,model_version, subset=False):
     """
     update predict log file
     """
@@ -59,10 +59,10 @@ def update_evaluation_log(accuracy, roc_auc,runtime,model_version):
     ## name the logfile using something that cycles with date (day, month, year)    
     today = date.today()
     day_folder = f"{today.year}-{today.month}-{today.day}"
-    # if test:
-    #     logfile = os.path.join("logs","predict-test.log")
-    # else:
-    logfile = os.path.join("logs", day_folder ,f"model-eval-{today.year}-{today.month}-{today.day}.log")
+    if subset:
+        logfile = os.path.join("logs", day_folder ,"model-eval-subset.log")
+    else:
+        logfile = os.path.join("logs", day_folder ,f"model-eval-{today.year}-{today.month}-{today.day}.log")
         
     ## write the data to a csv file    
     header = ['unique_id','timestamp','accuracy', 'roc_auc','model_version','runtime']

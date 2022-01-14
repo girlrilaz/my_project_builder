@@ -117,7 +117,7 @@ class ModelName(BaseModel):
                                self.numerical, self.categorical, self.target, subset=subset)
         trainer.train()
 
-    def evaluate(self):
+    def evaluate(self, subset=False):
 
         """Predicts results for the test dataset"""
 
@@ -125,7 +125,7 @@ class ModelName(BaseModel):
 
         LOG.info("..... validating test data")
 
-        eval = ModelEvaluator(self.test_dataset, self.dataset, self.X_test, self.y_test)
+        eval = ModelEvaluator(self.test_dataset, self.dataset, self.X_test, self.y_test, subset=subset)
 
         eval.test_data_validation()
         model = eval.model_load()

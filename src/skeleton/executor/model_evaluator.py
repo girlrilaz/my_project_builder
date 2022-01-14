@@ -26,12 +26,13 @@ from utils.logger import update_evaluation_log
 LOG = get_logger('xgboost_evaluator')
 
 class ModelEvaluator:
-    def __init__(self, test_dataset, dataset, X_test, y_test):
+    def __init__(self, test_dataset, dataset, X_test, y_test, subset):
         self.config = Config.from_json(CFG)
         self.test_dataset = test_dataset
         self.dataset = dataset
         self.X_test = X_test
         self.y_test = y_test
+        self.subset = subset
         self.model_name = self.config.model.name
         self.model_folder = self.config.model.folder
         self.model_version = self.config.model.version
@@ -67,9 +68,14 @@ class ModelEvaluator:
 
     def model_load(self):
 
-        model_pickle_name = self.model_name + '_' + self.model_folder + '.' + self.model_version + '.pickle'
-        saved_model = os.path.join('models', 'saved_models', self.model_name, self.model_folder, model_pickle_name)
-        LOG.info(f"..... loading model {saved_model}")
+        if self.subset:
+            model_pickle_name = self.model_name + '_' + self.model_folder + '.' + self.model_version + '-subset.pickle'
+            saved_model = os.path.join('models', 'saved_models', self.model_name, self.model_folder, model_pickle_name)
+            LOG.info(f"..... loading trained subset model {saved_model}")
+        else:
+            model_pickle_name = self.model_name + '_' + self.model_folder + '.' + self.model_version + '.pickle'
+            saved_model = os.path.join('models', 'saved_models', self.model_name, self.model_folder, model_pickle_name)
+            LOG.info(f"..... loading model {saved_model}")
 
         if not os.path.exists(saved_model):
             exc = (f"model '{saved_model}' cannot be found. Did you train the full model?")
@@ -144,4 +150,4 @@ class ModelEvaluator:
         runtime = "%03d:%02d:%02d"%(h, m, s)
 
         ## update the log file
-        update_evaluation_log(simple_acc, roc_auc, runtime, self.model_version)
+        update_evaluation_log(simple_acc, roc_auc, runtime, self.model_version, self.subset)
