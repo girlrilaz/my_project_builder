@@ -32,7 +32,7 @@ def update_train_log(data_shape, runtime, model_version, model_version_note, sub
     day_folder = f"{today.year}-{today.month}-{today.day}"
 
     if subset:
-        logfile = os.path.join("logs", day_folder, "model-train-subset.log")
+        logfile = os.path.join("logs", day_folder, f"model-train-subset-{today.year}-{today.month}-{today.day}.log")
     else:
         logfile = os.path.join("logs", day_folder,f"model-train-{today.year}-{today.month}-{today.day}.log")
         

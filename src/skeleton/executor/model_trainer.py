@@ -97,12 +97,21 @@ class ModelTrainer:
          # LOG.info(f"Saved checkpoint: {self.checkpoint_path}")
 
         # save model pickel here
-        LOG.info(f"saving model: {self.name + '_' + self.folder + '.' + self.version}")
 
         save_path = os.path.join(self.model_save_path, self.name, self.folder)
         os.makedirs(save_path, exist_ok = True)
-        pickle.dump(final_model, open(os.path.join(save_path, self.name + '_' + \
-            self.folder + '.' + self.version + '.pickle'),'wb'))
+
+        if self.subset:
+
+            LOG.info(f"saving model(subset): {self.name + '_' + self.folder + '.' + self.version}")
+            pickle.dump(final_model, open(os.path.join(save_path, self.name + '_' + \
+                self.folder + '.' + self.version + '-subset.pickle'),'wb'))
+
+        else:
+            
+            LOG.info(f"saving model: {self.name + '_' + self.folder + '.' + self.version}")
+            pickle.dump(final_model, open(os.path.join(save_path, self.name + '_' + \
+                self.folder + '.' + self.version + '.pickle'),'wb'))
 
         LOG.info(f"saved model: {save_path}")
         LOG.info("Model training completed")
