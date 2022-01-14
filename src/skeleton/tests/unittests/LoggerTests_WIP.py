@@ -11,7 +11,7 @@ import pandas as pd
 sys.path.insert(1, os.path.join('..', os.getcwd()))
 
 ## import model specific functions and variables
-from src.logger import update_train_log, update_predict_log, update_processing_log
+from utils.logger import update_train_log, update_evaluation_log #, update_processing_log
 
 class LoggerTest(unittest.TestCase):
     """

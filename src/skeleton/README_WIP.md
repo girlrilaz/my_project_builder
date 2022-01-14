@@ -167,15 +167,16 @@ python -m run-tests
 
 NOTES:
 
-1. Configs
+<!-- 1. Configs
 2. Dataloader
 3. Data Pipelines / Processing
 4. Model
 5. Evaluation
 6. Prediction
-7. Inferrer
-8. App
-6. Unit testing
-7. Logging
-8. Dockerization
-9. Model Serving
+7. Inferrer -->
+<!-- 8. Logging -->
+9. Unit testing
+10. App
+11. Unit testing
+12. Dockerization
+13. Model Serving
