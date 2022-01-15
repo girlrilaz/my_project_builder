@@ -51,7 +51,7 @@ def update_train_log(data_shape, runtime, model_version, model_version_note, bes
                             model_version,model_version_note,runtime, best_params])
         writer.writerow(to_write)
 
-def update_evaluation_log(accuracy, roc_auc,runtime,model_version, subset=False):
+def update_evaluation_log(eval_metrics,runtime,model_version):
     """
     update predict log file
     """
@@ -59,13 +59,11 @@ def update_evaluation_log(accuracy, roc_auc,runtime,model_version, subset=False)
     ## name the logfile using something that cycles with date (day, month, year)    
     today = date.today()
     day_folder = f"{today.year}-{today.month}-{today.day}"
-    if subset:
-        logfile = os.path.join("logs", day_folder ,"model-eval-subset.log")
-    else:
-        logfile = os.path.join("logs", day_folder ,f"model-eval-{today.year}-{today.month}-{today.day}.log")
+ 
+    logfile = os.path.join("logs", day_folder ,f"model-eval-{today.year}-{today.month}-{today.day}.log")
         
     ## write the data to a csv file    
-    header = ['unique_id','timestamp','accuracy', 'roc_auc','model_version','runtime']
+    header = ['unique_id','timestamp','model_version','runtime','eval_metrics']
     write_header = False
     if not os.path.exists(logfile):
         write_header = True
@@ -74,8 +72,7 @@ def update_evaluation_log(accuracy, roc_auc,runtime,model_version, subset=False)
         if write_header:
             writer.writerow(header)
 
-        to_write = map(str,[uuid.uuid4(),time.time(),accuracy, roc_auc,
-                            model_version,runtime])
+        to_write = map(str,[uuid.uuid4(),time.time(), model_version,runtime, eval_metrics])
         writer.writerow(to_write)
 
 # if __name__ == "__main__":

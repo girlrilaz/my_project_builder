@@ -4,6 +4,7 @@
 # standard library
 import os
 import time
+import json
 import pickle
 import pandas as pd
 
@@ -28,6 +29,7 @@ LOG = get_logger('xgboost_evaluator')
 class ModelEvaluator:
     def __init__(self, test_dataset, dataset, X_test, y_test, subset):
         self.config = Config.from_json(CFG)
+        self.predictions = {}
         self.test_dataset = test_dataset
         self.dataset = dataset
         self.X_test = X_test
@@ -112,29 +114,36 @@ class ModelEvaluator:
         # evaluate predictions using train_test split - quicker
         accuracy = accuracy_score(self.y_test, self.predictions['y_pred'])
         simple_acc = round(accuracy * 100.0,2)
-        acc_1 = f"\n Train-Test split accuracy: {round(accuracy * 100.0,2)} %"
+        acc_1 = f"\n Train-Test split accuracy: {simple_acc} %"
         print(acc_1)
 
         # evaluate predictions using Kfold method - good for sets model has not seen
         kfold = KFold(n_splits=10, random_state=7, shuffle = True)
         results = cross_val_score(model, self.X_test, self.y_test, cv=kfold)
-        acc_2 = f" K-fold validation accuracy (std): {round(results.mean()*100,2)} % ({round(results.std()*100,2)} %)"
+        k_fold_mean = round(results.mean()*100,2)
+        k_fold_std = round(results.std()*100,2)
+        acc_2 = f" K-fold validation accuracy (std): {k_fold_mean} % ({k_fold_std} %)"
         print(acc_2)
 
         # evaluate predictions using Stratified Kfold method - good for multiple classes or imbalanced dataset
         stratified_kfold = StratifiedKFold(n_splits=10, random_state=7, shuffle = True)
         s_results = cross_val_score(model, self.X_test, self.y_test, cv=stratified_kfold)
-        acc_3 = f" Stratified K-fold validation accuracy (std): {round(s_results.mean()*100,2)} % ({round(s_results.std()*100,2)} %)"
+        s_k_fold_mean = round(s_results.mean()*100,2)
+        s_k_fold_std = round(s_results.std()*100,2)
+        acc_3 = f" Stratified K-fold validation accuracy (std): {s_k_fold_mean} % ({s_k_fold_std} %)"
         print(acc_3)
 
         # evaluate predictions using confusion matrix
         print("\n Classification Report - ", model_name_version, "\n\n")
-        print(classification_report(self.y_test, self.predictions['y_pred']))
+        print(classification_report(self.y_test, self.predictions['y_pred'])) #output_dict=True
 
         # evaluate predictions using confusion matrix roc_auc_score
         roc_score = roc_auc_score(self.y_test, self.predictions['y_proba'][:, 1])
         roc_auc = round(roc_score,2)
         print(f"\n Receiver Operating Characteristics (ROC) Score : {roc_auc} \n\n")
+
+        #summarize metrics in a dict
+        eval_metrics = self.metrics_summary(simple_acc, k_fold_mean, k_fold_std, s_k_fold_mean, s_k_fold_std, roc_auc)
 
         # ## GENERATE PLOTS
         os.makedirs(self.plots_path, exist_ok = True)
@@ -150,4 +159,16 @@ class ModelEvaluator:
         runtime = "%03d:%02d:%02d"%(h, m, s)
 
         ## update the log file
-        update_evaluation_log(simple_acc, roc_auc, runtime, self.model_folder + '.' + self.model_version, self.subset)
+        update_evaluation_log(eval_metrics, runtime, self.model_folder + '.' + self.model_version)
+
+        return simple_acc, k_fold_mean, k_fold_std, s_k_fold_mean, s_k_fold_std, roc_auc
+
+    def metrics_summary(self, simple_acc, k_fold_mean, k_fold_std, s_k_fold_mean, s_k_fold_std, roc_auc):
+
+        eval_metrics = {"simple_acc": simple_acc, 
+                        "k_fold_acc" : {"k_fold_mean" : k_fold_mean, "k_fold_std" : k_fold_std},
+                        "s_k_fold_acc" : {"s_k_fold_mean" : s_k_fold_mean, "s_k_fold_std": s_k_fold_std},
+                        "roc_auc": roc_auc
+                        }
+        # print(json.dumps(eval_metrics, indent = 4))
+        return eval_metrics

@@ -105,7 +105,7 @@ class ModelTrainer:
 
         if self.subset:
 
-            LOG.info(f"saving model(subset): {self.name + '_' + self.folder + '.' + self.version}")
+            LOG.info(f"saving model(subset): {self.name + '_' + self.folder + '.' + self.version + '-subset'}")
             pickle.dump(final_model, open(os.path.join(save_path, self.name + '_' + \
                 self.folder + '.' + self.version + '-subset.pickle'),'wb'))
 

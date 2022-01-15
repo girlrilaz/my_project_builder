@@ -74,6 +74,7 @@ def plot_pr_roc(y_act, y_score, save_path, label = "", color='b', show=False, ta
     
     if show:
         plt.show()
+
     plt.savefig(os.path.join(save_path, 'ROC_curve.png'))
 
 
@@ -103,4 +104,5 @@ def plot_pr_vs_th(y_act, y_score, save_path, show=False, tag=""):
     
     if show:
         plt.show()
-    # plt.savefig(os.path.join(save_path, 'Prec_Recall_vs_Threshold_curve.png'))
+
+    #plt.savefig(os.path.join(save_path, 'Prec_Recall_vs_Threshold_curve.png'))
