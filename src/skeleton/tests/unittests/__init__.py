@@ -6,8 +6,9 @@ import sys
 import os
 
 from .EnvironmentTests import *
+from .MakeDataTests import *
 # from ApiTests import *
-# from ModelTests import *
+from .ModelTests import *
 from .LoggerTests import *
 
 ## parse inputs
@@ -31,13 +32,16 @@ for o, a in optlist:
 ## Environment tests
 EnvironmentTestSuite = unittest.TestLoader().loadTestsFromTestCase(EnvironmentTest)
 
+## Made data tests
+MakeDataTestSuite = unittest.TestLoader().loadTestsFromTestCase(MakeDataTest)
+
 # ## api tests
 # ApiTestSuite = unittest.TestLoader().loadTestsFromTestCase(ApiTest)
 
-# ## model tests
-# ModelTestSuite = unittest.TestLoader().loadTestsFromTestCase(ModelTest)
+## model tests
+ModelTestSuite = unittest.TestLoader().loadTestsFromTestCase(ModelTest)
 
 ## logger tests
 LoggerTestSuite = unittest.TestLoader().loadTestsFromTestCase(LoggerTest)
 
-MainSuite = unittest.TestSuite([EnvironmentTestSuite, LoggerTestSuite]) #ModelTestSuite,ApiTestSuite
+MainSuite = unittest.TestSuite([EnvironmentTestSuite, MakeDataTestSuite, ModelTestSuite, LoggerTestSuite]) #ApiTestSuite
