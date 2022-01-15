@@ -1,3 +1,7 @@
+"""
+basic test procedure for logger.py
+"""
+
 import logging.config
 import yaml
 import time,os,re,csv,sys,uuid,joblib
@@ -81,11 +85,8 @@ def update_evaluation_log(eval_metrics,runtime,model_version):
 #     basic test procedure for logger.py
 #     """
 
-#     from src.model import MODEL_VERSION, MODEL_VERSION_NOTE
-    
 #     ## train logger
-#     update_train_log(str((100,10)),"{'rmse':0.5}","00:00:01",
-#                      MODEL_VERSION, MODEL_VERSION_NOTE,test=True)
+#     update_train_log(str((100,10)), "00:00:01", "1.0.0", "version_note", "{'learning_rate':0.05}", subset=True)
+
 #     ## predict logger
-#     update_predict_log("[0]","[0.6,0.4]","['united_states', 24, 'aavail_basic', 8]",
-#                        "00:00:01",MODEL_VERSION, test=True)
+#     update_evaluation_log('{"accuracy": 0.91, "roc_auc": 0.88}',"00:00:01","1.0.0")
