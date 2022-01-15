@@ -24,7 +24,7 @@ class LoggerTest(unittest.TestCase):
         ensure log file is created
         """
 
-        log_test_date = "2022-1-15" #date.today()
+        log_test_date = date.today() #"2022-1-15" #date.today()
 
         log_file = os.path.join("logs", f"{log_test_date}", "model-train-subset.log")
         if os.path.exists(log_file):
@@ -45,7 +45,7 @@ class LoggerTest(unittest.TestCase):
         """
         ensure that content can be retrieved from log file
         """
-        log_test_date = "2022-1-15" #date.today()
+        log_test_date = date.today() #"2022-1-15" #date.today()
 
         log_file = os.path.join("logs", f"{log_test_date}", "model-train-subset.log")
         
@@ -66,7 +66,7 @@ class LoggerTest(unittest.TestCase):
         """
         ensure log file is created
         """
-        log_test_date = "2022-1-15" #date.today()
+        log_test_date = date.today() #"2022-1-15" #date.today()
         log_file = os.path.join("logs" , f"{log_test_date}" , f"model-eval-{log_test_date}.log")
         if os.path.exists(log_file):
             os.remove(log_file)
@@ -84,7 +84,7 @@ class LoggerTest(unittest.TestCase):
         """
         ensure that content can be retrieved from log file
         """
-        log_test_date = "2022-1-15" #date.today()
+        log_test_date = date.today() #"2022-1-15" #date.today()
         log_file = os.path.join("logs" , f"{log_test_date}" ,f"model-eval-{log_test_date}.log")
 
         ## update the log

@@ -37,8 +37,8 @@ class ModelName(BaseModel):
         self.y_train = None
         self.X_test = None
         self.y_test = None
-        # self.X = []
-        # self.y = []
+        self.X = []
+        self.y = []
         self.train_dataset = []
         self.test_dataset = []
         self.numerical = self.config.data.numerical_att
@@ -81,7 +81,7 @@ class ModelName(BaseModel):
         train_shape = DataLoader().feature_pipeline(self.numerical, self.categorical) \
             .fit(self.train_dataset).transform(self.train_dataset)
 
-        ## subset the data to enable faster unittests
+        # subset the data to enable faster unittests
         if subset:
             subset_query = np.empty(shape=(1,1), dtype=object)
             while subset_query.shape[1] != train_shape.shape[1]:

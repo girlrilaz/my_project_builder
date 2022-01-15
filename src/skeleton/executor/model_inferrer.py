@@ -18,8 +18,6 @@ class ModelInferrer:
         self.target = self.config.train.target_att
         self.saved_path = './models/saved_models/XGBoost/1/XGBoost_1.0.0.pickle'
         self.model = pickle.load(open(self.saved_path, 'rb'))
-        # self.predict = self.model.signatures["serving_default"]
-        # print(self.predict.structured_outputs)
 
     def preprocess(self, query):
 

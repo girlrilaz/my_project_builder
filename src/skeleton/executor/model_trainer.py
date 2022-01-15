@@ -10,11 +10,9 @@ import pickle
 #external
 from xgboost.sklearn import XGBClassifier
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
-from sklearn.pipeline import Pipeline
 
 #internal
 from utils.logger import get_logger, update_train_log
-# from utils.dataloader import DataLoader
 
 LOG = get_logger('xgboost_training')
 
@@ -38,7 +36,6 @@ class ModelTrainer:
         self.subset = subset
         self.train_log_dir = './logs/'
         self.model_save_path = './models/saved_models/'
-        # self.checkpoint_path = './checkpoints/'
 
     def train(self):
 
@@ -58,28 +55,6 @@ class ModelTrainer:
 
         LOG.info('..... grid searching')
 
-        # grid_params =  {
-        #     "nthread":[4],
-        #     "n_estimators": [20, 40],
-        #     "objective": ["binary:logistic"],
-        #     "learning_rate" : [0.25, 0.5],
-        #     "eval_metric": ["error"],
-        #     "eta": [0.3],
-        #     "gamma": [0],
-        #     "max_depth": [6],
-        #     "min_child_weight": [4],
-        #     "max_delta_step": [0],
-        #     "subsample": [1],
-        #     "seed": [0],
-        #     "scale_pos_weight": [1]
-        # }
-
-        # feature_pipeline = DataLoader().feature_pipeline(self.numerical_att, self.categorical_att)  
-        # target_pipeline = DataLoader().target_pipeline(self.target_att)
-        # init_model = self.model
-        # init_model_pipeline = Pipeline(steps=[('cat', feature_pipeline), 
-        #                                       ('clf', init_model)])
-
         grid =  GridSearchCV(self.model, param_grid=vars(self.grid_params), n_jobs=5,
                    cv=StratifiedKFold(n_splits=5, random_state=0, shuffle=True),
                    scoring='roc_auc',
@@ -92,14 +67,9 @@ class ModelTrainer:
 
         ## fit model on training data
         final_model = XGBClassifier(**best_params, use_label_encoder=False)
-        # final_model = Pipeline(steps=[('f_preprocessing', feature_pipeline), 
-        #                         ('f_model', final_model)])
         final_model.fit(self.X_train,self.y_train)
 
-         # LOG.info(f"Saved checkpoint: {self.checkpoint_path}")
-
         # save model pickel here
-
         save_path = os.path.join(self.model_save_path, self.name, self.folder)
         os.makedirs(save_path, exist_ok = True)
 

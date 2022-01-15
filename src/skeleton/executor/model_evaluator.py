@@ -4,7 +4,6 @@
 # standard library
 import os
 import time
-import json
 import pickle
 import pandas as pd
 
@@ -41,7 +40,6 @@ class ModelEvaluator:
         self.predictions = {}
         self.report_path = './evaluation/report'
         self.plots_path = './evaluation/plots'
-        # self.saved_path = '/Users/ninaraymond/documents/github/production_template_dl/Unet/saved_models/unet/1'
 
     def test_data_validation(self):
 
@@ -100,7 +98,7 @@ class ModelEvaluator:
 
         return self.predictions
 
-    def evaluation_report(self, model):  #, y_proba, title="", cmap="Blues"
+    def evaluation_report(self, model):
 
         ## start timer for runtime
         time_start = time.time()
