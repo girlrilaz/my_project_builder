@@ -8,7 +8,7 @@ import os
 from .EnvironmentTests import *
 # from ApiTests import *
 # from ModelTests import *
-# from LoggerTests import *
+from .LoggerTests import *
 
 ## parse inputs
 try:
@@ -37,7 +37,7 @@ EnvironmentTestSuite = unittest.TestLoader().loadTestsFromTestCase(EnvironmentTe
 # ## model tests
 # ModelTestSuite = unittest.TestLoader().loadTestsFromTestCase(ModelTest)
 
-# ## logger tests
-# LoggerTestSuite = unittest.TestLoader().loadTestsFromTestCase(LoggerTest)
+## logger tests
+LoggerTestSuite = unittest.TestLoader().loadTestsFromTestCase(LoggerTest)
 
-MainSuite = unittest.TestSuite([EnvironmentTestSuite]) #LoggerTestSuite,ModelTestSuite,ApiTestSuite
+MainSuite = unittest.TestSuite([EnvironmentTestSuite, LoggerTestSuite]) #ModelTestSuite,ApiTestSuite
