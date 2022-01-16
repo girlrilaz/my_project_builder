@@ -6,5 +6,5 @@ RUN pip install -r /tmp/requirements.txt
 ADD . /app
 RUN pip install /app
 
-ENTRYPOINT ["titanic"]
+ENTRYPOINT ["skeleton"]
 CMD ["--help"]
