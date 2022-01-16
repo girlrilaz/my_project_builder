@@ -34,13 +34,19 @@
 
 .PHONY: docker-build
 docker-build:
-	docker build -t skeleton . --load
+	docker build -t skeleton-tryout . --load
 
 .PHONY: docker-run
 docker-run:
 	# TODO: Change command line for training, etc
 	# and mounting data/output volumes.
-	docker run -it -p 8080:8080 skeleton
+	docker run -it -p 8080:8080 skeleton-tryout
+
+.PHONY: docker-push
+docker-push:
+	docker tag skeleton-tryout demondaisy/skeleton-tryout:skeleton-tryout
+	docker login
+	docker push demondaisy/skeleton-tryout:skeleton-tryout
 
 .PHONY: test
 test:  # Runs tests.
