@@ -11,12 +11,9 @@ import json
 import numpy as np
 import pandas as pd
 
-# ## import model specific functions and variables
-# from configs.module.config import CFG
-# from models.model import ModelName #load_data, build, train, evaluate #model_train, model_load, model_predict
-# # from models.model import MODEL_VERSION, MODEL_VERSION_NOTE
+sys.path.append('.')
 
-from model_inferrer import ModelInferrer
+from executor.model_inferrer import ModelInferrer
 
 model = ModelInferrer()
 
