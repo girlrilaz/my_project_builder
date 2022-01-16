@@ -175,8 +175,14 @@ NOTES:
 6. Prediction
 7. Inferrer -->
 <!-- 8. Logging -->
-9. Unit testing
+<!-- 9. Unit testing
 10. App
 11. Unit testing
-12. Dockerization
+12. Dockerization -->
 13. Model Serving
+TRY:
+HEROKU
+FASTAPI
+
+
+docker build -t skeleton/app . --load
