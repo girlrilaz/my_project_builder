@@ -42,8 +42,8 @@ class ModelInferrer:
             else:
                     break
 
-        print(f'n_ : {n_samples}')
-        print(f'y_ : {subset_query.shape[1]}')
+        # print(f'n_ : {n_samples}')
+        # print(f'y_ : {subset_query.shape[1]}')
 
         return subset_query, subset_indices, y
 

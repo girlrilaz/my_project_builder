@@ -7,7 +7,7 @@ import os
 
 from .EnvironmentTests import *
 from .MakeDataTests import *
-# from ApiTests import *
+from .ApiTests import *
 from .ModelTests import *
 from .LoggerTests import *
 
@@ -35,8 +35,8 @@ EnvironmentTestSuite = unittest.TestLoader().loadTestsFromTestCase(EnvironmentTe
 ## Made data tests
 MakeDataTestSuite = unittest.TestLoader().loadTestsFromTestCase(MakeDataTest)
 
-# ## api tests
-# ApiTestSuite = unittest.TestLoader().loadTestsFromTestCase(ApiTest)
+## api tests
+ApiTestSuite = unittest.TestLoader().loadTestsFromTestCase(ApiTest)
 
 ## model tests
 ModelTestSuite = unittest.TestLoader().loadTestsFromTestCase(ModelTest)
@@ -44,4 +44,4 @@ ModelTestSuite = unittest.TestLoader().loadTestsFromTestCase(ModelTest)
 ## logger tests
 LoggerTestSuite = unittest.TestLoader().loadTestsFromTestCase(LoggerTest)
 
-MainSuite = unittest.TestSuite([EnvironmentTestSuite, MakeDataTestSuite, ModelTestSuite, LoggerTestSuite]) #ApiTestSuite
+MainSuite = unittest.TestSuite([EnvironmentTestSuite, MakeDataTestSuite, ModelTestSuite, LoggerTestSuite, ApiTestSuite])
