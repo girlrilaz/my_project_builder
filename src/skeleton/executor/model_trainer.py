@@ -74,16 +74,21 @@ class ModelTrainer:
         os.makedirs(save_path, exist_ok = True)
 
         if self.subset:
-
+            # saving subset trained model
             LOG.info(f"saving model(subset): {self.name + '_' + self.folder + '.' + self.version + '-subset'}")
             pickle.dump(final_model, open(os.path.join(save_path, self.name + '_' + \
                 self.folder + '.' + self.version + '-subset.pickle'),'wb'))
-
         else:
-            
+            # saving full trained model
             LOG.info(f"saving model: {self.name + '_' + self.folder + '.' + self.version}")
             pickle.dump(final_model, open(os.path.join(save_path, self.name + '_' + \
                 self.folder + '.' + self.version + '.pickle'),'wb'))
+
+            # saving full trained model
+            LOG.info(f"saving latest training data for model: {self.name + '_' + self.folder + '.' + self.version}")
+            data_file = os.path.join(save_path, f"{self.name + '_' + self.folder + '.' + self.version}" +'-train_data.pickle')
+            with open(data_file,'wb') as tmp:
+                pickle.dump({'y':self.y_train,'X':self.X_train},tmp)
 
         LOG.info(f"saved model: {save_path}")
         LOG.info("Model training completed")

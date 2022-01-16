@@ -9,7 +9,7 @@ from sklearn.decomposition import PCA
 from sklearn.pipeline import Pipeline
 from sklearn.covariance import EllipticEnvelope
 from scipy.stats import wasserstein_distance
-from model import get_preprocessor
+from dataloader import DataLoader
 
 def get_latest_train_data():
     """
@@ -35,7 +35,7 @@ def get_monitoring_tools(X,y):
 
     """
 
-    preprocessor = get_preprocessor()
+    preprocessor = DataLoader.feature_pipeline(numerical_features, categorical_features)()
     preprocessor = preprocessor.fit(X)
     X_pp = preprocessor.transform(X)
     
@@ -88,11 +88,11 @@ if __name__ == "__main__":
     y = data['y']
     X = data['X']
 
-    ## get performance monitoring tools
-    pm_tools = get_monitoring_tools(X,y)
-    print("outlier_X",pm_tools['outlier_X'])
-    print("wasserstein_X",pm_tools['wasserstein_X'])
-    print("wasserstein_y",pm_tools['wasserstein_y'])
+    # ## get performance monitoring tools
+    # pm_tools = get_monitoring_tools(X,y)
+    # print("outlier_X",pm_tools['outlier_X'])
+    # print("wasserstein_X",pm_tools['wasserstein_X'])
+    # print("wasserstein_y",pm_tools['wasserstein_y'])
     
-    print("done")
+    # print("done")
     
