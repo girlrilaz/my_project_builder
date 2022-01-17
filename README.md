@@ -48,7 +48,7 @@ then check if your package name exists.
 
 We can upload a package to a repository such as PyPi, but for testing purposes, best to use a testing platform such as testpypi https://test.pypi.org/
 
-Create and account and remember your username and password.
+Create an account and remember your username and password.
 
 To upload your package to testpypi, first install twine 
 
