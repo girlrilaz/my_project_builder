@@ -226,6 +226,6 @@ General project setup steps and procedures - some may be an iterative process, f
 12. Dockerization
 13. Model Serving
 
-ALSO TRY:
+ALSO TRY:    
 HEROKU - to deploy the model with some free templates    
 FASTAPI - an alternative to Flask
