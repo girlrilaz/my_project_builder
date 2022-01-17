@@ -56,7 +56,7 @@ Mac:
 source .venv/bin/activate
 ```
 
-## 3. Install Python dependencies
+## 4. Install Python dependencies
 
 ```
 pip install -r requirements.txt
@@ -74,20 +74,23 @@ pip freeze > requirements.txt
 * for local dataset
 Add your raw dataset(s) in data > raw folder
 
-## 5. Perform an initial integrity scan for the raw data
+## 5. Set the paramaters in the config file 
+
+There are a few version of configuration formats in this skeleton such as json, YAML and module, for this example use config in configs > module > config.py
+
+## 6. Run the Model Suite
+
+To run the model trainin on full dataset, use this:
 
 ```
-python -m src.data.data_integrity_scanner
+python -m main full
 ```
 
-## 6. Run data cleaning
+To run the model training on a subset of the dataset, especially if you a large dataset and you want to train on only a subset and restrict training time, use this:
 
 ```
-python -m src.data.data_cleaning
+python -m main subset
 ```
-
-
-#### TODO : Unit Testing
 
 ## Unit Testing
 
@@ -108,80 +111,118 @@ To run all tests,
 python -m run-tests
 ```
 
+or
+
+```
+make tests
+```
+
+### Checking for testing coverage
+
+Coverage measurement is typically used to gauge the effectiveness of tests. It can show which parts of your code are being exercised by tests, and which are not. To find out more please refer to : https://coverage.readthedocs.io/en/6.2/
+
+To install coverage
+```
+pip install coverage
+```
+
+and to run it
+
+```
+coverage report
+```
+
+or
+
+```
+coverage html
+```
+
+for a prettier html version of the report.
+
+## Dockerization
+
+Make sure you have docker running in your desktop and have created a Dockerfile. To know more about docker, go here: https://docker-curriculum.com/
+
+### Build docker image
+
+```
+docker build -t [image_name] . --load
+```
+
+### Run docker image
+
+```
+	docker run -it -p 8080:8080 [image_name]
+```
+
+### Push docker image to your Docker Hub repository
+
+```
+	docker tag [image_name] [docker_hub_profile]/[image_name]:[image_name]
+	docker login
+	docker push [docker_hub_profile]/[image_name]:[image_name]
+```
+
 ### Project Organization
+
+The project tree below is an example of a project organization:
+
 ------------
-
-    ├── LICENSE
-    ├── README.md          <- The top-level README for developers using this project.
-    ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   ├── raw            <- The original, immutable data dump.
-    │   └── reference      <- Any reference or staging table files
-    │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
-    ├── logs               <- Where generated logfiles are kept
-    │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
-    │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py  ## Change this
-    │   │
-    │   ├── reports         <- Scripts to run different report generation scripts
-    │   │   │                 
-    │   │   ├── predict_model.py ## Change this
-    │   │   └── train_model.py ## Change this
-    │   │
-    │   ├── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │   │   └── visualize.py
-    │   └── logger.py      <- logger module script
-    │
-    ├── unittests          <- where each individual unit test scripts are stored
-    │   ├── __init__.py    <- Makes src a Python module
-    │   ├── [something]Tests.py    <- The list of tests depends on how many are created
-    │   ....
-    ├── .gitignore         <- .gitignore contains a list of files/folders/subfolders that will be
-    │                          ignored when syncing to the github repository. Very important if you want to
-    │                          keep the confidential items such as data that are not supposed to be
-    │                          published or credentials and secret keys/tokens
-    │
-    ├──.env    <- typically where the confidential keys and credentials are kept i.e. username, password etc.
-
+.
+├── Dockerfile               <- Dockerfile to build docker image
+├── Makefile                 <- Makefile to create run short cuts in CLI using make command
+├── README.md                <- The top-level README for developers using this project.
+├── app                      <- Working directory for model application
+│   ├── app.py
+│   ├── model_inferrer.py
+│   ├── requirements.txt
+│   ├── static
+│   └── templates
+├── configs                  <- Configureation files, can choose either JSON, YAML or Module format
+│   ├── json
+│   ├── module
+│   └── yaml
+├── data
+│   ├── external             <- Data from third party sources.
+│   ├── interim              <- Intermediate data that has been transformed.
+│   ├── processed            <- The final, canonical data sets for modeling. 
+│   └── raw                  <- The original, immutable data dump.
+├── evaluation               <- Generated reports, graphics and figures to be used in reporting
+├── executor                 <- Keep model executors such as trainer, evaluator and inferrer (predictor)
+├── logs                     <- Where generated logfiles are kept
+├── main.py                  <- Main script to run the entire code
+├── models                   <- Model folder
+│   ├── base_model.py        <- Base Model code building blocks script
+│   ├── model.py             <- Model executors combined code script
+│   └── saved_models         <- Folder to save trained models
+├── notebooks                <- Jupyter notebooks. 
+├── requirements.txt         <- The requirements file for reproducing the analysis environment, e.g.
+├── tests                    <- where each individual unit test scripts are stored, can choose Pytest or Unittests
+│   ├── pytest
+│   └── unittests
+└── utils                    <- folder to organize scripts, for example dataloader, visualize etc.
 
 --------
 
+## Other
 
+General project setup steps and procedures - some may be an iterative process, for example logging and unit testing
 
-NOTES:
-
-<!-- 1. Configs
+1. Configs
 2. Dataloader
 3. Data Pipelines / Processing
 4. Model
 5. Evaluation
 6. Prediction
-7. Inferrer -->
-<!-- 8. Logging -->
-<!-- 9. Unit testing
+7. Inferrer
+8. Logging
+9. Unit testing
 10. App
 11. Unit testing
-12. Dockerization -->
+12. Dockerization
 13. Model Serving
-TRY:
-HEROKU
-FASTAPI
 
-
-docker build -t skeleton/app . --load
+ALSO TRY:
+HEROKU - to deploy the model with some free templates
+FASTAPI - an alternative to Flask
