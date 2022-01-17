@@ -3,7 +3,7 @@ import setuptools
 with open('README.md', encoding = 'utf-8') as f:
     long_description = f.read()
 
-package_nam_var = 'RandomForest_Flask'
+package_nam_var = 'skeleton'
 
 setuptools.setup(
     name = package_nam_var,
@@ -13,9 +13,9 @@ setuptools.setup(
     long_description_content_type = 'text/markdown',
     author = 'Nor Raymond',
     author_email = 'norfazlinahamdan@gmail.com',
-    url="https://github.com/girlrilaz/production_template_ml",
+    url="https://github.com/girlrilaz/basic_project_template",
     project_urls={
-        "Bug Tracker": "https://github.com/girlrilaz/production_template_ml/issues",
+        "Bug Tracker": "https://github.com/girlrilaz/basic_project_template/issues",
     },
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -30,6 +30,14 @@ setuptools.setup(
                         "joblib",
                         "click",
                         "flask",
+                        "pandera==0.8.1",
+                        "Flask==2.0.2",
+                        "jsonschema==4.3.2",
+                        "matplotlib==3.5.1",
+                        "PyYAML==6.0",
+                        "scikit-learn==1.0.2",
+                        "xgboost==1.5.1"
+                        
                     ],
     extras_require = {'dev': ["pep517", "pytest", "pylint", "black", "pre-commit"], 
     }, 
