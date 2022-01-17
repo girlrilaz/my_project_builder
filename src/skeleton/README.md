@@ -80,7 +80,7 @@ There are a few version of configuration formats in this skeleton such as json, 
 
 ## 6. Run the Model Suite
 
-To run the model trainin on full dataset, use this:
+To run the model training on full dataset, use this:
 
 ```
 python -m main full
@@ -102,13 +102,13 @@ An alternative unit testing framework that can be used - Pytest
 
 To run individual unit testing, check the commands in Makefile. For example, to run the API test, enter the following in your command line
 ```
-python -m unittests.MakeDataTests
+python -m tests.unittests.MakeDataTests
 ```
 
 To run all tests, 
 
 ```
-python -m run-tests
+python -m utils.tests
 ```
 
 or
@@ -153,15 +153,15 @@ docker build -t [image_name] . --load
 ### Run docker image
 
 ```
-	docker run -it -p 8080:8080 [image_name]
+docker run -it -p 8080:8080 [image_name]
 ```
 
 ### Push docker image to your Docker Hub repository
 
 ```
-	docker tag [image_name] [docker_hub_profile]/[image_name]:[image_name]
-	docker login
-	docker push [docker_hub_profile]/[image_name]:[image_name]
+docker tag [image_name] [docker_hub_profile]/[image_name]:[image_name]
+docker login
+docker push [docker_hub_profile]/[image_name]:[image_name]
 ```
 
 ### Project Organization
@@ -169,6 +169,8 @@ docker build -t [image_name] . --load
 The project tree below is an example of a project organization:
 
 ------------
+
+```
 .
 ├── Dockerfile               <- Dockerfile to build docker image
 ├── Makefile                 <- Makefile to create run short cuts in CLI using make command
@@ -203,6 +205,7 @@ The project tree below is an example of a project organization:
 │   └── unittests
 └── utils                    <- folder to organize scripts, for example dataloader, visualize etc.
 
+```
 --------
 
 ## Other
