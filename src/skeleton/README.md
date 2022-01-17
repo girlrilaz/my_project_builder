@@ -76,7 +76,7 @@ Add your raw dataset(s) in data > raw folder
 
 ## 5. Set the paramaters in the config file 
 
-There are a few version of configuration formats in this skeleton such as json, YAML and module, for this example use config in configs > module > config.py
+There are a few configuration formats in this skeleton such as json, YAML and module, for this example use config in configs > module > config.py
 
 ## 6. Run the Model Suite
 
@@ -95,7 +95,7 @@ python -m main subset
 ## Unit Testing
 
 The unit testing framework used for this project is [`unittest`](https://docs.python.org/3/library/unittest.html).
-Tests are stored in the `ALA_automation/unittests` directory.
+Tests are stored in the `tests/unittests` directory.
 An alternative unit testing framework that can be used - Pytest
 
 ### Testing locally with make command
