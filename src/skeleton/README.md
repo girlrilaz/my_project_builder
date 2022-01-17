@@ -210,7 +210,7 @@ The project tree below is an example of a project organization:
 
 ## Other
 
-General project setup steps and procedures - some may be an iterative process, for example logging and unit testing
+General project setup steps and procedures - some may be an iterative process, for example logging and unit testing. So use this is a basic guide only
 
 1. Configs
 2. Dataloader
@@ -227,5 +227,5 @@ General project setup steps and procedures - some may be an iterative process, f
 13. Model Serving
 
 ALSO TRY:
-HEROKU - to deploy the model with some free templates
+HEROKU - to deploy the model with some free templates    
 FASTAPI - an alternative to Flask
