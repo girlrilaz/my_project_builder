@@ -1,7 +1,5 @@
-ALA automation
+Production-Ready Code Skeleton for Machine Learning and Deep Learning
 ==============================
-
-Language assessment report generation automation.
 
 ## 1. Getting Started
 
@@ -19,7 +17,7 @@ In your terminal or command line, the command to create virtual environment with
 
 for this project, copy and paste the command below
 ```
-conda create --name ALA python=3.8
+conda create --name py38 python=3.8
 ```
 ##### OPTION 2: Set up a Python virtual environment with 'python-dotenv'
 
@@ -44,7 +42,7 @@ Windows or Mac - in the terminal or command line :
 <i>conda activate [replace_with_env_name]</i>
 
 ```
-conda activate ALA
+conda activate py38
 ```
 
 ##### OPTION 2: dotenv virtual environment
@@ -73,7 +71,8 @@ pip freeze > requirements.txt
 
 ## 4. Gather the raw data
 
-Add your raw dataset(s) in ALA_automation > data > raw folder
+* for local dataset
+Add your raw dataset(s) in data > raw folder
 
 ## 5. Perform an initial integrity scan for the raw data
 
