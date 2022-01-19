@@ -1,0 +1,26 @@
+
+{
+    "data": {
+        "source" : "",
+        "type" : "",
+        "path": "",
+        "bucket": "",
+        "numerical_att": [],
+        "categorical_att" : []
+    },
+    "train": {
+        "target_att":[],
+        "test_size": 0.1,
+        "random_state": 123,
+        "metrics": ["accuracy"]
+    },
+    "model": { 
+        "name" : "",
+        "folder": "1",
+        "version": "0.0",
+        "short_description": "",
+        "params": { "params1" : []
+
+        }
+    }
+}

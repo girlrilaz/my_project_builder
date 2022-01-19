@@ -1,0 +1,10 @@
+# TODO : This is the requirement.txt that you have built in main project folder. Copy and Paste in app file to isolate
+
+# pandera==0.8.1
+# Flask==2.0.2
+# jsonschema==4.3.2
+# matplotlib==3.5.1
+# joblib==1.1.0
+# PyYAML==6.0
+# scikit-learn==1.0.2
+# xgboost==1.5.1
