@@ -1,4 +1,4 @@
-Package Builder
+My Package Builder
 ==============================
 
 Building Python packages
